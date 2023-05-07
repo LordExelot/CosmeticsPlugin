@@ -4,7 +4,6 @@ using Skua.Core.Interfaces;
 using Skua.Core.Models;
 using Skua.Core.Models.Items;
 using Skua.WPF;
-using Skua.WPF.Services;
 using Skua_CosmeticPlugin.View.UserControls;
 using Skua_CosmeticsPlugin;
 using System.Diagnostics;
@@ -12,7 +11,6 @@ using System.IO;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using System.Windows.Media;
 
 namespace Skua_CosmeticPlugin
 {
@@ -56,8 +54,9 @@ namespace Skua_CosmeticPlugin
 
         //[ObservableProperty]
         private FrameworkElement? _selectedTab;
-        public FrameworkElement SelectedTab {
-            get { return _selectedTab!; } 
+        public FrameworkElement SelectedTab
+        {
+            get { return _selectedTab!; }
             set { SetProperty(ref _selectedTab, value); }
         }
 
@@ -66,16 +65,16 @@ namespace Skua_CosmeticPlugin
         private static SWF? _selectedItem;
         public static SWF? SelectedItem
         {
-            get 
-            { 
+            get
+            {
                 return _selectedItem;
             }
-            set 
-            { 
+            set
+            {
                 _selectedItem = value;
 
                 LoadCtrl.VisibleRowSelectedWeapon.Height = CosmeticsMainWindow.ShowGridIfTrue(SelectedItem!.ItemGroup == "Weapon");
-                LoadCtrl.ItemIsFavorite = 
+                LoadCtrl.ItemIsFavorite =
                     SelectedItem != null && FavoriteSWFs != null &&
                     FavoriteSWFs.Any(x => x.ID == SelectedItem.ID && x.Path == SelectedItem.Path);
             }

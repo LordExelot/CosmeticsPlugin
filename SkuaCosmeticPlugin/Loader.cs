@@ -1,20 +1,17 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using CommunityToolkit.Mvvm.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using Skua.Core.Interfaces;
 using Skua.Core.Models;
+using Skua.Core.Models.Items;
+using Skua.Core.Scripts;
 using Skua.WPF.Services;
 using Skua_CosmeticPlugin;
 using System.IO;
-using Newtonsoft.Json;
-using static Skua_CosmeticPlugin.CosmeticsMainWindow;
-using Skua_CosmeticPlugin.View.UserControls;
-using Skua.Core.Models.Items;
-using System.Windows;
-using System.Runtime.CompilerServices;
-using Skua.Core.Scripts;
 using System.Reflection;
-using CommunityToolkit.Mvvm.DependencyInjection;
-using System.Windows.Threading;
-using MaterialDesignThemes.Wpf;
+using System.Runtime.CompilerServices;
+using System.Windows;
+using static Skua_CosmeticPlugin.CosmeticsMainWindow;
 
 namespace Skua_CosmeticsPlugin
 {
@@ -22,8 +19,8 @@ namespace Skua_CosmeticsPlugin
     {
         public static Loader Instance { get; } = new();
         public string Name => "Cosmetics Plugin";
-		public string Author => "Lord Exelot";
-		public string Description => "This plugin will allow you to visually load items onto your character without having them.";
+        public string Author => "Lord Exelot";
+        public string Description => "This plugin will allow you to visually load items onto your character without having them.";
 
         public List<IOption>? Options { get; } = new();
         private IPluginHelper? helper = null;
@@ -31,7 +28,7 @@ namespace Skua_CosmeticsPlugin
         #region (Un)Load
         public IScriptInterface? Bot { get; private set; }
         public void Load(IServiceProvider provider, IPluginHelper helper)
-		{
+        {
             Bot = provider.GetRequiredService<IScriptInterface>();
             this.helper = helper;
 
@@ -65,10 +62,10 @@ namespace Skua_CosmeticsPlugin
         #region Passive Parsing
         private void EnableEvents()
         {
-            if (!PreInitSettings.Instance.PasParseDrop && 
-                !PreInitSettings.Instance.PasParseShop && 
+            if (!PreInitSettings.Instance.PasParseDrop &&
+                !PreInitSettings.Instance.PasParseShop &&
                 !PreInitSettings.Instance.PasParseQuest &&
-                !PreInitSettings.Instance.PasParsePlayer && 
+                !PreInitSettings.Instance.PasParsePlayer &&
                 !PreInitSettings.Instance.PasParseMap)
                 return;
 

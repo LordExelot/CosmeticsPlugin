@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.Mvvm;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Skua.Core.Interfaces;
 using Skua.Core.Models;
@@ -12,7 +11,6 @@ using System.Dynamic;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using static Skua_CosmeticPlugin.CosmeticsMainWindow;
 
 namespace Skua_CosmeticPlugin.View.UserControls
@@ -222,7 +220,7 @@ namespace Skua_CosmeticPlugin.View.UserControls
 
         private void DownloadAssetsButton_Click(object sender, RoutedEventArgs e)
         {
-           if (SelectedItem == null)
+            if (SelectedItem == null)
                 return;
             Task.Run(() =>
             {
@@ -313,7 +311,7 @@ namespace Skua_CosmeticPlugin.View.UserControls
         {
             Task.Run(() =>
             {
-                var monsters = SelectMonster(); 
+                var monsters = SelectMonster();
                 if (monsters == null)
                     return;
 

@@ -4,8 +4,6 @@ using System.Collections;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Shapes;
 using static Skua_CosmeticPlugin.CosmeticsMainWindow;
 
 namespace Skua_CosmeticPlugin.View.UserControls
@@ -44,8 +42,8 @@ namespace Skua_CosmeticPlugin.View.UserControls
                     setItems.Add(new TreeViewItem()
                     {
                         // Set items
-                        Header = $"({item.Category})\t{item.Name}" + 
-                                (manual || offHand ? "\n" : String.Empty ) +
+                        Header = $"({item.Category})\t{item.Name}" +
+                                (manual || offHand ? "\n" : String.Empty) +
                                 (manual ? "[Manual]" : String.Empty) +
                                 (manual && offHand ? "\t" : String.Empty) +
                                 (offHand ? "[Offhand]" : String.Empty),
@@ -200,7 +198,7 @@ namespace Skua_CosmeticPlugin.View.UserControls
 
         public class SetItem
         {
-            
+
         }
 
 
@@ -296,9 +294,9 @@ namespace Skua_CosmeticPlugin.View.UserControls
         }
         private static readonly string ContributedItemsPath = System.IO.Path.Combine(DirectoryPath, "ContributedItems.json");
 
-        public void UpdateContributedItems(IEnumerable<SWF> swfs) 
+        public void UpdateContributedItems(IEnumerable<SWF> swfs)
             => Dispatcher.Invoke(() => ContributedItems = ContributedItems.Union(swfs.Select(x => new SavedItem(x))).ToList());
-        public void UpdateContributedItems(int ID, string path) 
+        public void UpdateContributedItems(int ID, string path)
             => Dispatcher.Invoke(() => ContributedItems = ContributedItems.Union(Enumerable.Repeat<SavedItem>(new(ID, path), 1)).ToList());
 
         public static double GetPercentage(ICollection list)

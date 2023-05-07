@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using Skua.Core.Models;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -86,7 +85,7 @@ namespace Skua_CosmeticPlugin.View.UserControls
                         Save();
                 }
             }
-            
+
             private bool _debugLogger = false;
             public bool DebugLogger
             {
@@ -101,7 +100,7 @@ namespace Skua_CosmeticPlugin.View.UserControls
                         Save();
                 }
             }
-            
+
             private bool _developerOptionsVisibile = false;
             public bool DeveloperOptionsVisible
             {

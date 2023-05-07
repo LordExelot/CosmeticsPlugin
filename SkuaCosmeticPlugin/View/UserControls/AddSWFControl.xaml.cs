@@ -15,7 +15,6 @@ using System.Windows.Data;
 using System.Windows.Threading;
 using static Skua_CosmeticPlugin.CosmeticsMainWindow;
 //using GoogleData = Google.Apis.Sheets.v4.Data;
-using System.Windows.Markup;
 
 namespace Skua_CosmeticPlugin.View.UserControls
 {
@@ -107,7 +106,7 @@ namespace Skua_CosmeticPlugin.View.UserControls
             }
         }
         private Dictionary<Button, string> runningButtons = new();
-        private bool doingMultiple = false; 
+        private bool doingMultiple = false;
 
         private void PostInvButton_Click(object sender, RoutedEventArgs e) => PostButton(DataType.Inventory);
         private void PostBankButton_Click(object sender, RoutedEventArgs e) => PostButton(DataType.Bank);
@@ -334,7 +333,7 @@ namespace Skua_CosmeticPlugin.View.UserControls
                     case DataType.Bank:
                         {
                             ManageStatus(PostBankButton, "Scan your Bank");
-                            if (!silentPost) 
+                            if (!silentPost)
                                 Logger("Parsing", "Bank Items");
 
                             Bot.Bank.Open();
@@ -725,7 +724,7 @@ namespace Skua_CosmeticPlugin.View.UserControls
 
         public async void UploadSWFs(List<SWF>? list)
         {
-            if (list == null || !list.Any()) 
+            if (list == null || !list.Any())
                 return;
 
             DebugLogger();

@@ -1,7 +1,6 @@
-﻿using System.Windows;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using CommunityToolkit.Mvvm.ComponentModel;
 using static Skua_CosmeticPlugin.CosmeticsMainWindow;
 
 namespace Skua_CosmeticPlugin.View.UserControls
