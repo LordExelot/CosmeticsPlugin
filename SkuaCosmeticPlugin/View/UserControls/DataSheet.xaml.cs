@@ -1,18 +1,13 @@
-﻿using Newtonsoft.Json;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Newtonsoft.Json;
 using Skua.Core.Models.Items;
 using System.ComponentModel;
-using System.Net.Http;
-using System.Runtime.CompilerServices;
+using System.IO;
+using System.Net.Sockets;
 using System.Windows;
 using System.Windows.Controls;
-using CommunityToolkit.Mvvm;
-using System.Windows.Media;
 using System.Windows.Threading;
 using static Skua_CosmeticPlugin.CosmeticsMainWindow;
-using CommunityToolkit.Mvvm.ComponentModel;
-using System.IO;
-using Skua.Core.Interfaces;
-using System.Net.Sockets;
 
 namespace Skua_CosmeticPlugin.View.UserControls
 {
@@ -228,35 +223,40 @@ namespace Skua_CosmeticPlugin.View.UserControls
             List<SWF>? toFilter = (menu.Name) switch
             {
                 "Menu_All" => FavoritesShown ? FavoriteSWFs : CurrentSWFs,
-                "Menu_Helms" => FavoritesShown ? FavoriteSWFs?.Where(x => x.Category == ItemCategory.Helm).ToList() : swfFilterHelms,
-                "Menu_Armor" => FavoritesShown ? FavoriteSWFs?.Where(x => x.Category == ItemCategory.Armor || x.Category == ItemCategory.Class).ToList() : swfFilterArmor,
-                "Menu_Capes" => FavoritesShown ? FavoriteSWFs?.Where(x => x.Category == ItemCategory.Cape).ToList() : swfFilterCapes,
-                "Menu_Weapons_All" => FavoritesShown ? FavoriteSWFs?.Where(x => x.ItemGroup == "Weapon").ToList() : swfFilterWeapons,
-                "Menu_Pets" => FavoritesShown ? FavoriteSWFs?.Where(x => x.Category == ItemCategory.Pet).ToList() : swfFilterPets,
-                "Menu_GroundRunes" => FavoritesShown ? FavoriteSWFs?.Where(x => x.Category == ItemCategory.Misc).ToList() : swfFilterRunes,
+                "Menu_Helms" => basicFilter(x => x.Category == ItemCategory.Helm, swfFilterHelms),
+                "Menu_Armor" => basicFilter(x => x.Category == ItemCategory.Armor || x.Category == ItemCategory.Class, swfFilterArmor),
+                "Menu_Capes" => basicFilter(x => x.Category == ItemCategory.Cape, swfFilterCapes),
+                "Menu_Weapons_All" => basicFilter(x => x.ItemGroup == "Weapon", swfFilterWeapons),
+                "Menu_Pets" => basicFilter(x => x.Category == ItemCategory.Pet, swfFilterPets),
+                "Menu_GroundRunes" => basicFilter(x => x.Category == ItemCategory.Misc, swfFilterRunes),
 
-                "Menu_Weapons_Melee_All" => FavoritesShown ? FavoriteSWFs?.Where(x => meleeWeapons.Contains(x.Category)).ToList() : swfFilterWeapons!.Where(x => meleeWeapons.Contains(x.Category)).ToList(),
-                "Menu_Weapons_Melee_Axes" => FavoritesShown ? FavoriteSWFs?.Where(x => x.Category == ItemCategory.Axe).ToList() : swfFilterWeapons!.Where(x => x.Category == ItemCategory.Staff).ToList(),
-                "Menu_Weapons_Melee_Daggers" => FavoritesShown ? FavoriteSWFs?.Where(x => x.Category == ItemCategory.Dagger).ToList() : swfFilterWeapons!.Where(x =>  x.Category == ItemCategory.Dagger).ToList(),
-                "Menu_Weapons_Melee_Gauntlets" => FavoritesShown ? FavoriteSWFs?.Where(x => x.Category == ItemCategory.Gauntlet).ToList() : swfFilterWeapons!.Where(x =>  x.Category == ItemCategory.Gauntlet).ToList(),
-                "Menu_Weapons_Melee_Maces" => FavoritesShown ? FavoriteSWFs?.Where(x => x.Category == ItemCategory.Mace).ToList() : swfFilterWeapons!.Where(x =>  x.Category == ItemCategory.Mace).ToList(),
-                "Menu_Weapons_Melee_Polearms" => FavoritesShown ? FavoriteSWFs?.Where(x => x.Category == ItemCategory.Polearm).ToList() : swfFilterWeapons!.Where(x =>  x.Category == ItemCategory.Polearm).ToList(),
-                "Menu_Weapons_Melee_Swords" => FavoritesShown ? FavoriteSWFs?.Where(x => x.Category == ItemCategory.Sword).ToList() : swfFilterWeapons!.Where(x =>  x.Category == ItemCategory.Sword).ToList(),
-                "Menu_Weapons_Melee_Whips" => FavoritesShown ? FavoriteSWFs?.Where(x => x.Category == ItemCategory.Whip).ToList() : swfFilterWeapons!.Where(x => x.Category == ItemCategory.Whip).ToList(),
+                "Menu_Weapons_Melee_All" => weaponFilter(x => meleeWeapons.Contains(x.Category)),
+                "Menu_Weapons_Melee_Axes" => weaponFilter(x => x.Category == ItemCategory.Axe),
+                "Menu_Weapons_Melee_Daggers" => weaponFilter(x => x.Category == ItemCategory.Dagger),
+                "Menu_Weapons_Melee_Gauntlets" => weaponFilter(x => x.Category == ItemCategory.Gauntlet),
+                "Menu_Weapons_Melee_Maces" => weaponFilter(x => x.Category == ItemCategory.Mace),
+                "Menu_Weapons_Melee_Polearms" => weaponFilter(x => x.Category == ItemCategory.Polearm),
+                "Menu_Weapons_Melee_Swords" => weaponFilter(x => x.Category == ItemCategory.Sword),
+                "Menu_Weapons_Melee_Whips" => weaponFilter(x => x.Category == ItemCategory.Whip),
 
-                "Menu_Weapons_Ranged_All" => FavoritesShown ? FavoriteSWFs?.Where(x => rangedWeapons.Contains(x.Category)).ToList() : swfFilterWeapons!.Where(x => rangedWeapons.Contains(x.Category)).ToList(),
-                "Menu_Weapons_Ranged_HandGuns" => FavoritesShown ? FavoriteSWFs?.Where(x => x.Category == ItemCategory.HandGun).ToList() : swfFilterWeapons!.Where(x => x.Category == ItemCategory.HandGun).ToList(),
-                "Menu_Weapons_Ranged_Bows" => FavoritesShown ? FavoriteSWFs?.Where(x => x.Category == ItemCategory.Bow).ToList() : swfFilterWeapons!.Where(x => x.Category == ItemCategory.Bow).ToList(),
-                "Menu_Weapons_Ranged_Guns" =>   FavoritesShown ? FavoriteSWFs?.Where(x => x.Category == ItemCategory.Gun).ToList() : swfFilterWeapons!.Where(x => x.Category == ItemCategory.Gun).ToList(),
-                "Menu_Weapons_Ranged_Rifles" => FavoritesShown ? FavoriteSWFs?.Where(x => x.Category == ItemCategory.Rifle).ToList() : swfFilterWeapons!.Where(x => x.Category == ItemCategory.Rifle).ToList(),
+                "Menu_Weapons_Ranged_All" => weaponFilter(x => rangedWeapons.Contains(x.Category)),
+                "Menu_Weapons_Ranged_HandGuns" => weaponFilter(x => x.Category == ItemCategory.HandGun),
+                "Menu_Weapons_Ranged_Bows" => weaponFilter(x => x.Category == ItemCategory.Bow),
+                "Menu_Weapons_Ranged_Guns" => weaponFilter(x => x.Category == ItemCategory.Gun),
+                "Menu_Weapons_Ranged_Rifles" => weaponFilter(x => x.Category == ItemCategory.Rifle),
 
-                "Menu_Weapons_Magic_All" => FavoritesShown ? FavoriteSWFs?.Where(x => magicWeapons.Contains(x.Category)).ToList() : swfFilterWeapons!.Where(x => magicWeapons.Contains(x.Category)).ToList(),
-                "Menu_Weapons_Magic_Staves" => FavoritesShown ? FavoriteSWFs?.Where(x => x.Category == ItemCategory.Staff).ToList() : swfFilterWeapons!.Where(x => x.Category == ItemCategory.Staff).ToList(),
-                "Menu_Weapons_Magic_Wands" => FavoritesShown ? FavoriteSWFs?.Where(x => x.Category == ItemCategory.Wand).ToList() : swfFilterWeapons!.Where(x => x.Category == ItemCategory.Wand).ToList(),
+                "Menu_Weapons_Magic_All" => weaponFilter(x => magicWeapons.Contains(x.Category)),
+                "Menu_Weapons_Magic_Staves" => weaponFilter(x => x.Category == ItemCategory.Staff),
+                "Menu_Weapons_Magic_Wands" => weaponFilter(x => x.Category == ItemCategory.Wand),
 
                 _ => null
             };
             ApplyFilter(ref menu, toFilter?.Where(x => textFilter(x)), restore);
+
+            List<SWF>? basicFilter(Func<SWF, bool> onFav,  List<SWF>? def)
+                => FavoritesShown ? FavoriteSWFs?.Where(onFav).ToList() : def;
+            List<SWF>? weaponFilter(Func<SWF, bool> predicate)
+                => FavoritesShown ? FavoriteSWFs?.Where(predicate).ToList() : swfFilterWeapons!.Where(predicate).ToList();
 
             bool textFilter(SWF x)
             {
@@ -272,7 +272,7 @@ namespace Skua_CosmeticPlugin.View.UserControls
                 string stringModify(string s)
                 {
                     string output = String.Empty;
-                    foreach(char c in s.ToLower())
+                    foreach (char c in s.ToLower())
                         if (Char.IsLetterOrDigit(c))
                             output += c;
                     return output;
@@ -367,7 +367,7 @@ namespace Skua_CosmeticPlugin.View.UserControls
         private void btnNext_Click(object sender, System.EventArgs e) => Navigate(PagingMode.Next);
         private void btnPrev_Click(object sender, System.EventArgs e) => Navigate(PagingMode.Previous);
         private void btnLast_Click(object sender, System.EventArgs e) => Navigate(PagingMode.Last);
-        private void NumberOfSWFsCombo_SelectionChanged(object sender, SelectionChangedEventArgs e) 
+        private void NumberOfSWFsCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (CurrentSWFs == null)
                 return;
