@@ -174,7 +174,7 @@ namespace Skua_CosmeticPlugin.View.UserControls
             set
             {
                 _selectedSet = value;
-                Helm = value.Items.Find(x => x.Category == ItemCategory.Helm);
+                Helm = value?.Items.Find(x => x.Category == ItemCategory.Helm);
             }
         }
 
@@ -196,24 +196,13 @@ namespace Skua_CosmeticPlugin.View.UserControls
             }
         }
 
-        public class SetItem
-        {
-
-        }
-
-
-
-
-
-
-
         #region SavedItem
 
         public class SavedItem
         {
-            [JsonProperty("ID")]
+            [JsonProperty(nameof(ID))]
             public int ID { get; set; }
-            [JsonProperty("Path")]
+            [JsonProperty(nameof(Path))]
             public string Path { get; set; } = string.Empty;
 
             [JsonConstructor]
