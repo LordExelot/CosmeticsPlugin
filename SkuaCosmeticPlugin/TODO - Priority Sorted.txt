@@ -1,0 +1,24 @@
+﻿=== Needed before Release ===
+New Features > Main Menu > Sets
+Bog mode > cleanup cuz passive parse changes
+FrontEnd Suggestions > Main Menu > Change button style to match Skua Tab view
+New Features > Add SWFs > New Source > Player Target
+Passive Parsing > Change events to messengers
+
+=== Can be handled after Release ===
+Add Items > Uploading > Change to Google Sheets API Append
+Bugs > Randomizer to Load Menu > Using the web buttons (swf file and wiki) after a clicking the text to preview it in the LoadCtrl will do nothing untill the item is re-selected.
+	Randomizing selected /w main wep and offhand wep makes the two conflict.
+Bugs > Load Menu > Unfavorite item whilst favorites shown causes the ID sort to go backwards
+? FrontEnd Suggestions > Load Menu > Sidebar > Item Preview 
+? New Features > Load Menu > Sidebar > Item Preview > In-game
+? New Features > Load Menu > Sidebar > Item Preview > Wiki Scraper
+? New Features > Options > Item Preview Toggle
+Passive Parsing > Options > Stop parsing on toggle, instead of startup
+New Features > Options > Artist Mode > Download all SWFs
+New Features > Options > Artist Mode > Download all Assets
+Options > SWFs shown pagination saving and loading properly
+
+=== Index ===
+? = Might make
+! = Might be takes as priority

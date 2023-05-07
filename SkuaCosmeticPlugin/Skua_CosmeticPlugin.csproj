@@ -1,0 +1,70 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	<TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>false</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>True</UseWPF>
+	<ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
+    <PackageReference Include="Google.Apis.Sheets.v4" Version="1.60.0.2979" />
+    <!--<PackageReference Include="ilmerge" Version="3.0.41" />-->
+    <PackageReference Include="MaterialDesignThemes" Version="4.8.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Skua.Core">
+      <HintPath>C:\Program Files\Skua\Skua AQW Bot\Assemblies\Skua.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Skua.Core.Interfaces">
+      <HintPath>C:\Program Files\Skua\Skua AQW Bot\Assemblies\Skua.Core.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Skua.Core.Models">
+      <HintPath>C:\Program Files\Skua\Skua AQW Bot\Assemblies\Skua.Core.Models.dll</HintPath>
+    </Reference>
+    <Reference Include="Skua.Core.Utils">
+      <HintPath>C:\Program Files\Skua\Skua AQW Bot\Assemblies\Skua.Core.Utils.dll</HintPath>
+    </Reference>
+    <Reference Include="Skua.WPF">
+      <HintPath>C:\Program Files\Skua\Skua AQW Bot\Assemblies\Skua.WPF.dll</HintPath>
+    </Reference>
+	<Reference Include="CommunityToolkit.Mvvm">
+	  <HintPath>C:\Program Files\Skua\Skua AQW Bot\Assemblies\CommunityToolkit.Mvvm.dll</HintPath>
+	</Reference>
+	<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ILMerge" Version="3.0.41" />
+  </ItemGroup>
+
+  <Target Name="ILMerge">
+	<!-- the ILMergePath property points to the location of ILMerge.exe console application -->
+    <Exec Command="$(ILMergeConsolePath) /out:obj\Release\net6.0-windows\Skua_CosmeticPlugin2.dll obj\Release\net6.0-windows\Skua_CosmeticPlugin.dll bin\Debug\net6.0-windows\Google.Protobuf.dll" />
+  </Target>
+
+</Project>

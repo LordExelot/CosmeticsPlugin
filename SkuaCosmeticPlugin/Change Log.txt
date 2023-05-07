@@ -1,0 +1,27 @@
+﻿@Skua - Cosmetics Plugin 
+New Update -  Version  0.6.10 [closed beta]
+https://drive.google.com/file/d/1scL9o5bgaQLNZe-dRwrZbS-LOKx4jKeR/view?usp=share_link
+
+```- - - - - Changelog - - - - -```**__New features:__**
+
+**__Changes:__**
+
+**__Fixes:__**
+
+```- - - - - Notes - - - - -```__**Known Issues:**__
+**Randomizer**
+- When clicking on the text to be brought to the Load menu where you can use the wiki or other buttons, the item isn't properly selected, causing the buttons to do nothing.
+**Load Menu**
+- Unfavorite item whilst favorites shown causes the sort-by-ID to go backwards.
+- Pagination elements seem to not update properly sometimes, still difficult to recreate.
+**Passive Parsing**
+- Turning off a script has a chance to cause the passive parsing to stop working.
+
+**__Comments:__**
+
+**__Poll:__**
+
+
+want to do for this version:
+sets?
+cleanup settings stuff for passive parse

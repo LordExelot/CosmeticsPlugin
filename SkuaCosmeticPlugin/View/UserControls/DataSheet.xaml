@@ -1,0 +1,270 @@
+﻿<UserControl x:Class="Skua_CosmeticPlugin.View.UserControls.DataSheet"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Skua_CosmeticPlugin.View.UserControls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:wpf="clr-namespace:Skua.WPF;assembly=Skua.WPF"
+             xmlns:main="clr-namespace:Skua_CosmeticPlugin"
+             mc:Ignorable="d" 
+             d:DesignHeight="405" d:DesignWidth="570"
+             d:Background="#424242"
+             d:Foreground="White"
+             >
+
+    <UserControl.Resources>
+        <ResourceDictionary Source="/Skua_CosmeticPlugin;component/ResourceDir.xaml"/>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="28"/>
+            <RowDefinition/>
+            <RowDefinition Height="35"/>
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="70*"/>
+                <ColumnDefinition Width="29*"/>
+                <ColumnDefinition Width="28"/>
+                <ColumnDefinition Width="28"/>
+            </Grid.ColumnDefinitions>
+
+            <Menu Name="DataGridMenu" d:Foreground="White" Grid.Column="0" Background="Transparent" FontSize="13" VerticalContentAlignment="Center" Padding="0,0,0,1">
+                <MenuItem Name="Menu_All" Header="All" Height="28" Padding="5,3,5,2" Click="ActivateFilter" FontWeight="UltraBlack"/>
+                <MenuItem Name="Menu_Armor" Header="Armor" Height="28" Padding="5,3,5,2" Click="ActivateFilter"/>
+                <MenuItem Name="Menu_Weapons" Header="Weapons" Height="28" Padding="5,3,5,2">
+                    <MenuItem Name="Menu_Weapons_All" Header="All Weapons" Click="ActivateFilter"/>
+                    <MenuItem Name="Menu_Weapons_Melee" Header="Melee Weapons">
+                        <MenuItem Name="Menu_Weapons_Melee_All" Header="All Melee Weapons" Click="ActivateFilter"/>
+                        <MenuItem Name="Menu_Weapons_Melee_Axes" Header="Axes" Click="ActivateFilter"/>
+                        <MenuItem Name="Menu_Weapons_Melee_Daggers" Header="Daggers" Click="ActivateFilter"/>
+                        <MenuItem Name="Menu_Weapons_Melee_Gauntlets" Header="Gauntlets" Click="ActivateFilter"/>
+                        <MenuItem Name="Menu_Weapons_Melee_Maces" Header="Maces" Click="ActivateFilter"/>
+                        <MenuItem Name="Menu_Weapons_Melee_Polearms" Header="Polearms" Click="ActivateFilter"/>
+                        <MenuItem Name="Menu_Weapons_Melee_Swords" Header="Swords" Click="ActivateFilter"/>
+                        <MenuItem Name="Menu_Weapons_Melee_Whips" Header="Whips" Click="ActivateFilter"/>
+                    </MenuItem>
+                    <MenuItem Name="Menu_Weapons_Ranged" Header="Ranged Weapons">
+                        <MenuItem Name="Menu_Weapons_Ranged_All" Header="All Ranged Weapons" Click="ActivateFilter"/>
+                        <MenuItem Name="Menu_Weapons_Ranged_Bows" Header="Bows" Click="ActivateFilter"/>
+                        <MenuItem Name="Menu_Weapons_Ranged_HandGuns" Header="Hand Guns" Click="ActivateFilter"/>
+                        <MenuItem Name="Menu_Weapons_Ranged_Guns" Header="Guns" Click="ActivateFilter"/>
+                        <MenuItem Name="Menu_Weapons_Ranged_Rifles" Header="Rifles" Click="ActivateFilter"/>
+                    </MenuItem>
+                    <MenuItem Name="Menu_Weapons_Magic" Header="Magic Weapons">
+                        <MenuItem Name="Menu_Weapons_Magic_All" Header="All Magic Weapons" Click="ActivateFilter"/>
+                        <MenuItem Name="Menu_Weapons_Magic_Staves" Header="Staves" Click="ActivateFilter"/>
+                        <MenuItem Name="Menu_Weapons_Magic_Wands" Header="Wands" Click="ActivateFilter"/>
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem Name="Menu_Helms" Header="Helms" Height="28" Padding="5,3,5,2" Click="ActivateFilter"/>
+                <MenuItem Name="Menu_Capes" Header="Capes" Height="28" Padding="5,3,5,2" Click="ActivateFilter"/>
+                <MenuItem Name="Menu_Pets" Header="Pets" Height="28" Padding="5,3,5,2" Click="ActivateFilter"/>
+                <MenuItem Name="Menu_GroundRunes" Header="Ground Runes" Height="28" Padding="5,3,5,2" Click="ActivateFilter"/>
+            </Menu>
+
+            <TextBox
+                Name="SearchBar"
+                Grid.Column="1"
+                FontSize="13"
+                VerticalAlignment="Stretch"
+                VerticalContentAlignment="Center"
+                Padding="2,0"
+                Margin="1"
+                Style="{StaticResource MaterialDesignTextBox}"
+                Background="Transparent"
+                TextChanged="SearchBar_TextChanged">
+            </TextBox>
+            <TextBlock 
+                Grid.Column="1" 
+                FontSize="12"
+                Foreground="LightGray"
+                Text="x"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Right"
+                Width="18"
+                Height="18"
+                Margin="0,1,1,2"
+                TextAlignment="Center"/>
+            <Button 
+                Name="SearchBarClear"
+                Grid.Column="1" 
+                HorizontalAlignment="Right" 
+                Background="Transparent" 
+                BorderThickness="0"
+                Width="18" 
+                Margin="1"
+                Click="SearchBarClear_Click"/>
+
+            <Button
+                Grid.Column="2"
+                Name="ToggleFavoritesButton"
+                Click="ToggleFavoritesButton_Click"
+                Height="28"
+                Padding="0">
+                <Button.Style>
+                    <Style
+                        BasedOn="{StaticResource MaterialDesignRaisedButton}"
+                        TargetType="{x:Type Button }">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding FavoritesShown, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidBrush}"/>
+                                <Setter Property="Background" Value="Transparent"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <TextBlock FontSize="12" Text="★" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            </Button>
+
+            <Button 
+                Grid.Column="3" 
+                Name="RefreshDataButton" 
+                Click="RefreshDataButton_Click"
+                Height="28"
+                Padding="0">
+                <TextBlock FontSize="12" Text="↻" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            </Button>
+        </Grid>
+
+        <DataGrid
+            d:Background="#424242"
+            Name="swfDataGrid"
+            Margin="5,0,5,5"
+            Grid.Row="1"
+            ScrollViewer.CanContentScroll="True" 
+            ScrollViewer.VerticalScrollBarVisibility="Visible"
+            IsReadOnly="True"
+            AutoGenerateColumns="False"
+            VirtualizingPanel.ScrollUnit="Pixel"
+            SelectionChanged="swfDataGrid_SelectionChanged"
+            SelectionMode="Single"
+            CanUserResizeColumns="False"
+            CanUserResizeRows="False"
+            CanUserReorderColumns="False">
+
+            <DataGrid.Columns d:Foreground="White">
+                <DataGridTextColumn Header="ID" Binding="{Binding ID}" Width="10*" SortDirection="Ascending">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                            <Setter Property="Padding" Value="5,0,0,0"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="60*">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                            <Setter Property="Padding" Value="5,0,0,0"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Category" Binding="{Binding DisplayCategory}" Width="30*">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                            <Setter Property="Padding" Value="5,0,0,0"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+
+            <DataGrid.Resources>
+                <Style 
+                    BasedOn="{StaticResource {x:Type DataGridCell }}"
+                    TargetType="{x:Type DataGridCell }">
+                    <Style.Triggers>
+                        <Trigger Property="DataGridCell.IsSelected" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource PrimaryHueMidBrush}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidForegroundBrush}"/>
+                            <Setter Property="FontWeight" Value="Bold"/>
+                        </Trigger>
+                    </Style.Triggers>
+                    <Setter Property="DataGridCell.Height" Value="30"/>
+                    <Setter Property="DataGridCell.Padding" Value="0"/>
+                    <Setter Property="DataGridCell.VerticalAlignment" Value="Center"/>
+                    <EventSetter Event="MouseDoubleClick" Handler="DataGridCell_MouseDoubleClick"/>
+                </Style>
+                <Style 
+                    BasedOn="{StaticResource {x:Type DataGridColumnHeader }}"
+                    TargetType="{x:Type DataGridColumnHeader }">
+                    <Setter Property="ItemsControl.Padding" Value="5,2,0,3"/>
+                    <Setter Property="ItemsControl.HorizontalContentAlignment" Value="Center"/>
+                </Style>
+            </DataGrid.Resources>
+        </DataGrid>
+
+        <Grid Grid.Row="2" Margin="0,0,0,5">
+            <StackPanel 
+                Orientation="Horizontal" 
+                HorizontalAlignment="Center">
+                <Button 
+                    Name="btnFirst"
+                    HorizontalAlignment="Left"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Height="30"
+                    Padding="4,0"
+                    Content="&lt;&lt;" 
+                    Click="btnFirst_Click"/>
+                <Button 
+                    Name="btnPrev"
+                    HorizontalAlignment="Left"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Height="30"
+                    Width="40"
+                    Padding="4,0"
+                    Click="btnPrev_Click"
+                    Content="&lt;"/>
+                <Label
+                    d:Foreground="White"
+                    d:Content="Page 1 of 2000"
+                    x:Name="paginationInfo" 
+                    HorizontalContentAlignment="Center" 
+                    VerticalContentAlignment="Center"
+                    HorizontalAlignment="Left"
+                    Width="140"/>
+                <Button
+                    Name="btnNext"
+                    HorizontalAlignment="Right"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Height="30"
+                    Width="40"
+                    Padding="4,0"
+                    Content="&gt;" 
+                    Click="btnNext_Click"/>
+                <Button
+                    Name="btnLast"
+                    HorizontalAlignment="Right"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Height="30"
+                    Padding="4,0"
+                    Content="&gt;&gt;"
+                    Click="btnLast_Click"/>
+            </StackPanel>
+            <ComboBox
+                x:Name="NumberOfSWFsCombo" 
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Text="Test"
+                Margin="0,0,5,0"
+                SelectedIndex="0"
+                SelectionChanged="NumberOfSWFsCombo_SelectionChanged"
+                Loaded="NumberOfSWFsCombo_Loaded">
+                <ComboBoxItem Content="10"/>
+                <ComboBoxItem Content="20"/>
+                <ComboBoxItem Content="50"/>
+                <ComboBoxItem Content="100"/>
+                <ComboBoxItem Content="500"/>
+                <ComboBoxItem Content="All"/>
+            </ComboBox>
+        </Grid>
+    </Grid>
+</UserControl>

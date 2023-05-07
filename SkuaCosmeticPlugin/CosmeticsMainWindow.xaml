@@ -1,0 +1,32 @@
+﻿<wpf:CustomWindow
+    x:Class="Skua_CosmeticPlugin.CosmeticsMainWindow"
+    Name="MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:wpf="clr-namespace:Skua.WPF;assembly=Skua.WPF"
+    xmlns:UserControls="clr-namespace:Skua_CosmeticPlugin.View.UserControls"
+    mc:Ignorable="d"
+    Title="Cosmetics Plugin"
+    Style="{StaticResource CustomWindow}"
+    Height="469"
+    Width="800"
+    MinWidth="800"
+    Closing="MainWindow_Closing">
+
+    <wpf:CustomWindow.Resources>
+        <ResourceDictionary Source="/Skua_CosmeticPlugin;component/ResourceDir.xaml"/>
+    </wpf:CustomWindow.Resources>
+
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="44"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <UserControls:MenuBar Grid.Column="1"/>
+        <ContentControl Grid.Row="1" Content="{Binding SelectedTab}" />
+    </Grid>
+
+</wpf:CustomWindow>

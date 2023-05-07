@@ -1,0 +1,105 @@
+﻿<wpf:CustomWindow
+        x:Class="Skua_CosmeticPlugin.View.UserControls.ManualLoadWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Skua_CosmeticPlugin.View.UserControls"
+        xmlns:wpf="clr-namespace:Skua.WPF;assembly=Skua.WPF"
+        mc:Ignorable="d"
+        Title="Manually Load SWF" 
+        Style="{StaticResource CustomWindow}"
+        Height="200" 
+        Width="400"
+        Closing="Window_Closing"
+        d:Background="#424242"
+        d:Foreground="White"
+        >
+
+    <wpf:CustomWindow.Resources>
+        <ResourceDictionary Source="/Skua_CosmeticPlugin;component/ResourceDir.xaml"/>
+    </wpf:CustomWindow.Resources>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="121*"/>
+            <ColumnDefinition Width="79*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <TextBlock
+                Text="sFile"
+                Margin="3"
+                Padding="0,3.5"
+                VerticalAlignment="Bottom"
+                HorizontalAlignment="Right"/>
+            <TextBlock
+                Grid.Row="1"
+                Text="sLink"
+                Margin="3"
+                Padding="0,3.5"
+                VerticalAlignment="Bottom"
+                HorizontalAlignment="Right"/>
+            <TextBlock
+                Grid.Row="2"
+                Text="Item Slot"
+                Margin="3"
+                Padding="0,4"
+                VerticalAlignment="Bottom"
+                HorizontalAlignment="Right"/>
+
+            <TextBox
+                Grid.Column="1"
+                Grid.Row="0"
+                Margin="2"
+                Name="TextBox_sFile"
+                VerticalContentAlignment="Bottom"
+                Padding="0,0,0,3.5"/>
+            <TextBox
+                Grid.Column="1"
+                Grid.Row="1"
+                Margin="2"
+                Name="TextBox_sLink"
+                VerticalContentAlignment="Bottom"
+                Padding="0,0,0,3.5"/>
+            <ComboBox
+                Grid.Column="1"
+                Grid.Row="2"
+                Margin="2"
+                Name="ComboBoxCategory"
+                VerticalContentAlignment="Bottom"
+                VerticalAlignment="Bottom">
+                <ComboBoxItem Content="Helm"/>
+                <ComboBoxItem Content="Armor" IsSelected="True"/>
+                <ComboBoxItem Content="Cape"/>
+                <ComboBoxItem Content="Weapon"/>
+                <ComboBoxItem Content="Dual-Wield Weapons"/>
+                <ComboBoxItem Content="Offhand Weapon"/>
+                <ComboBoxItem Content="Pet"/>
+                <ComboBoxItem Content="Ground Rune"/>
+            </ComboBox>
+        </Grid>
+
+        <Button
+            Grid.Row="1"
+            Margin="3,3,3,3"
+            Content="Load"
+            Name="LoadManualButton"
+            Click="LoadManualButton_Click"
+            Grid.ColumnSpan="2"/>
+    </Grid>
+</wpf:CustomWindow>

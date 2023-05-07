@@ -1,0 +1,415 @@
+﻿<UserControl x:Class="Skua_CosmeticPlugin.View.UserControls.OptionsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="405"
+             d:DesignWidth="800"
+             d:Background="#424242"
+             d:Foreground="White"
+             >
+
+    <UserControl.Resources>
+        <ResourceDictionary Source="/Skua_CosmeticPlugin;component/ResourceDir.xaml"/>
+    </UserControl.Resources>
+    <Grid Margin="0,10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0" Margin="5,0,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <TextBlock 
+                Text="Load Options"
+                FontSize="20"
+                HorizontalAlignment="Center"
+                FontWeight="Bold"/>
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock 
+                        Text="In-Game Gender"
+                        VerticalAlignment="Center"/>
+                        <ComboBox
+                        Grid.Column="1"
+                        Margin="0,3"
+                        Name="OptionInGameGender"
+                        IsTextSearchEnabled="False">
+                            <ComboBoxItem Content="Male"/>
+                            <ComboBoxItem Content="Female"/>
+                            <ComboBoxItem Content="Random"/>
+                        </ComboBox>
+                    </Grid>
+
+                    <CheckBox 
+                    Grid.Row="1"
+                    Name="ManualLoadCheck"
+                    Content="Show Manual Load Button"
+                    Margin="0,3"
+                    Checked="ManualLoadCheck_Event"
+                    Unchecked="ManualLoadCheck_Event" 
+                    Loaded="ManualLoadCheck_Loaded"/>
+
+                    <CheckBox
+                    Grid.Row="2"
+                    Name="CacheDBCheck"
+                    Content="Cache SWF Database (Local)"
+                    Margin="0,3"
+                    Checked="CacheDBCheck_Event"
+                    Unchecked="CacheDBCheck_Event"
+                    Loaded="CacheDBCheck_Loaded"/>
+                </Grid>
+            </Grid>
+
+
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <TextBlock 
+                Text="Passive Parsing"
+                FontSize="20"
+                HorizontalAlignment="Center"
+                FontWeight="Bold"/>
+                <Grid Grid.Row="1" Margin="0,3">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+
+                    <CheckBox 
+                    Grid.Row="0"
+                    Content="Parse a Shop's Items it's are loaded"
+                    Name="PassiveParseShopCheck"
+                    Checked="PassiveParseShopCheck_Event"
+                    Unchecked="PassiveParseShopCheck_Event" 
+                    Loaded="PassiveParseShopCheck_Loaded"/>
+
+                    <CheckBox 
+                    Grid.Row="1"
+                    Content="Parse a Quests's Items it's are loaded"
+                    Name="PassiveParseQuestCheck"
+                    Checked="PassiveParseQuestCheck_Event"
+                    Unchecked="PassiveParseQuestCheck_Event" 
+                    Loaded="PassiveParseQuestCheck_Loaded"/>
+
+                    <CheckBox
+                    Grid.Row="2"
+                    Content="Parse Items when they drop"
+                    Name="PassiveParseDropCheck"
+                    Checked="PassiveParseDropCheck_Event"
+                    Unchecked="PassiveParseDropCheck_Event"
+                    Loaded="PassiveParseDropCheck_Loaded"/>
+                    
+                    <CheckBox
+                    Grid.Row="3"
+                    Content="Parse Players when you join a new map"
+                    Name="PassiveParseMapCheck"
+                    Checked="PassiveParseMapCheck_Event"
+                    Unchecked="PassiveParseMapCheck_Event"
+                    Loaded="PassiveParseMapCheck_Loaded"/>
+                    
+                    <CheckBox
+                    Grid.Row="4"
+                    IsEnabled="False"
+                    Foreground="LightCoral"
+                    Content="Parse Players when they join your map"
+                    Name="PassiveParsePlayerCheck"
+                    Checked="PassiveParsePlayerCheck_Event"
+                    Unchecked="PassiveParsePlayerCheck_Event"
+                    Loaded="PassiveParsePlayerCheck_Loaded"/>
+                </Grid>
+            </Grid>
+
+        </Grid>
+        <Grid Grid.Column="1" Margin="5,0,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto" Name="artistModeRow"/>
+            </Grid.RowDefinitions>
+
+            <CheckBox
+                    Grid.Row="0"
+                    Name="ArtistModeCheck"
+                    Content="Artist Mode"
+                    FontSize="20"
+                    FontWeight="Bold"
+                    Checked="ArtistModeCheck_Event"
+                    Unchecked="ArtistModeCheck_Event"
+                    Margin="-10,0,0,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Loaded="ArtistModeCheck_Loaded"/>
+            
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+
+                <TextBlock 
+                    Text="Download .SWF Gender"
+                    Grid.Row="0"
+                    VerticalAlignment="Center"/>
+                <ComboBox 
+                    Grid.Row="0" 
+                    Grid.Column="1" 
+                    Name="OptionDownloadGender"
+                    SelectedValuePath="Content"
+                    SelectionChanged="OptionDownloadGender_SelectionChanged" Loaded="OptionDownloadGender_Loaded">
+                    <ComboBoxItem Content="Male"/>
+                    <ComboBoxItem Content="Female"/>
+                    <ComboBoxItem Content="Both" IsSelected="True"/>
+                </ComboBox>
+
+                <CheckBox
+                    Grid.Row="1"
+                    Name="ArtistModeShowAssetsCheck"
+                    Margin="0,3"
+                    Content="Show Assets Buttons"
+                    IsChecked="True"
+                    Checked="ArtistModeShowAssetsCheck_Event"
+                    Unchecked="ArtistModeShowAssetsCheck_Event"
+                    Loaded="ArtistModeShowAssetsCheck_Loaded"
+                    />
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Column="2" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <TextBlock 
+                Text="Statistics"
+                FontSize="20"
+                HorizontalAlignment="Center"
+                FontWeight="Bold"/>
+
+            <Button
+                Name="ToggleDevOptions"
+                Background="Transparent"
+                BorderThickness="0"
+                Width="30"
+                Click="ToggleDevOptions_Click"
+                Cursor="Arrow"/>
+
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="0" Name="devOptions"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.5*"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock 
+                    Grid.Row="0"
+                    Text="Total SWF Count:"
+                    FontSize="17"
+                    HorizontalAlignment="Right"/>
+                <TextBlock 
+                    Name="StatTotalCount"
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Text="0"
+                    FontSize="17"
+                    HorizontalAlignment="Left"
+                    Padding="5,0"/>
+                
+                <TextBlock 
+                    Grid.Row="1"
+                    Text="Armors:"
+                    FontSize="13"
+                    HorizontalAlignment="Right"/>
+                <TextBlock 
+                    Name="StatArmorCount"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Text="0"
+                    FontSize="13"
+                    HorizontalAlignment="Left"
+                    Padding="5,0"/>
+
+                <TextBlock 
+                    Grid.Row="2"
+                    Text="Weapons:"
+                    FontSize="13"
+                    HorizontalAlignment="Right"/>
+                <TextBlock 
+                    Name="StatWeaponCount"
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Text="0"
+                    FontSize="13"
+                    HorizontalAlignment="Left"
+                    Padding="5,0"/>
+
+                <TextBlock 
+                    Grid.Row="3"
+                    Text="Helms:"
+                    FontSize="13"
+                    HorizontalAlignment="Right"/>
+                <TextBlock 
+                    Name="StatHelmCount"
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    Text="0"
+                    FontSize="13"
+                    HorizontalAlignment="Left"
+                    Padding="5,0"/>
+
+                <TextBlock 
+                    Grid.Row="4"
+                    Text="Capes:"
+                    FontSize="13"
+                    HorizontalAlignment="Right"/>
+                <TextBlock 
+                    Name="StatCapeCount"
+                    Grid.Row="4"
+                    Grid.Column="1"
+                    Text="0"
+                    FontSize="13"
+                    HorizontalAlignment="Left"
+                    Padding="5,0"/>
+
+                <TextBlock 
+                    Grid.Row="5"
+                    Text="Pets:"
+                    FontSize="13"
+                    HorizontalAlignment="Right"/>
+                <TextBlock 
+                    Name="StatPetCount"
+                    Grid.Row="5"
+                    Grid.Column="1"
+                    Text="0"
+                    FontSize="13"
+                    HorizontalAlignment="Left"
+                    Padding="5,0"/>
+
+                <TextBlock 
+                    Grid.Row="6"
+                    Text="Ground Runes:"
+                    FontSize="13"
+                    HorizontalAlignment="Right"/>
+                <TextBlock 
+                    Name="StatRuneCount"
+                    Grid.Row="6"
+                    Grid.Column="1"
+                    Text="0"
+                    FontSize="13"
+                    HorizontalAlignment="Left"
+                    Padding="5,0"/>
+
+                <TextBlock 
+                    Grid.Row="7"
+                    Text="Unique scans by you:"
+                    FontSize="15"
+                    HorizontalAlignment="Right"/>
+                <TextBlock 
+                    Name="StatScanCount"
+                    Grid.Row="7"
+                    Grid.Column="1"
+                    Text="0"
+                    FontSize="15"
+                    HorizontalAlignment="Left"
+                    Padding="5,0"/>
+
+                <TextBlock 
+                    Grid.Row="8"
+                    Text="Contributed by you:"
+                    FontSize="15"
+                    HorizontalAlignment="Right"/>
+                <TextBlock 
+                    Name="StatContributeCount"
+                    Grid.Row="8"
+                    Grid.Column="1"
+                    Text="0"
+                    FontSize="15"
+                    HorizontalAlignment="Left"
+                    Padding="5,0"/>
+
+                <TextBlock 
+                    Grid.Row="9"
+                    Text="Favorited by you:"
+                    FontSize="15"
+                    HorizontalAlignment="Right"/>
+                <TextBlock 
+                    Name="StatFavoriteCount"
+                    Grid.Row="9"
+                    Grid.Column="1"
+                    Text="0"
+                    FontSize="15"
+                    HorizontalAlignment="Left"
+                    Padding="5,0"/>
+ 
+                <Grid Grid.Row="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <CheckBox
+                    Grid.Row="0"
+                    Name="DebugLoggerCheck"
+                    Content="Enable Debug Logger"
+                    Checked="DebugLoggerCheck_Event"
+                    Unchecked="DebugLoggerCheck_Event"
+                    Margin="0,20,0,0" Loaded="DebugLoggerCheck_Loaded"/>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

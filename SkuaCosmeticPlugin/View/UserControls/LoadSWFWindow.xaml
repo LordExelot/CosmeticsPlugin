@@ -1,0 +1,215 @@
+﻿<UserControl x:Class="Skua_CosmeticPlugin.View.UserControls.LoadSWFWindow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Skua_CosmeticPlugin.View.UserControls"
+             xmlns:wpf="clr-namespace:Skua.WPF;assembly=Skua.WPF"
+             mc:Ignorable="d" 
+             d:DesignHeight="405"
+             d:DesignWidth="800"
+             d:Background="#424242"
+             d:Foreground="White"
+             >
+
+    <UserControl.Resources>
+        <ResourceDictionary Source="/Skua_CosmeticPlugin;component/ResourceDir.xaml"/>
+    </UserControl.Resources>
+
+    <Grid Grid.Row="1">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="72.5*"/>
+            <ColumnDefinition Width="27.5*"/>
+        </Grid.ColumnDefinitions>
+
+        <local:DataSheet/>
+        <Grid Grid.Column="1" Margin="0,20,0,2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock
+                    Name="SelectedItemText"
+                    Grid.Row="0"
+                    HorizontalAlignment="Center"
+                    FontSize="15"
+                    Text="Selected Item:"/>
+
+                <TextBlock
+                    Name="SelectedItem_Name"
+                    Grid.Row="1"
+                    HorizontalAlignment="Center"
+                    FontSize="12"/>
+                <TextBlock
+                    Name="SelectedItem_Category"
+                    Grid.Row="2"
+                    HorizontalAlignment="Center"
+                    FontSize="12"/>
+                <TextBlock
+                    Name="SelectedItem_Path"
+                    Grid.Row="3"
+                    HorizontalAlignment="Center"
+                    FontSize="12"/>
+                <TextBlock
+                    Name="SelectedItem_File"
+                    Grid.Row="4"
+                    HorizontalAlignment="Center"
+                    FontSize="12"/>
+            </Grid>
+
+            <Button 
+                Grid.Row="0" 
+                Name="FavoriteSWFButton" 
+                Click="FavoriteSWFButton_Click"
+                Background="Transparent"
+                BorderThickness="0"
+                Content="★"
+                FontSize="19"
+                Height="40"
+                Width="auto"
+                Margin="0,-20,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top">
+                <Button.Style>
+                    <Style
+                        BasedOn="{StaticResource MaterialDesignRaisedButton}"
+                        TargetType="{x:Type Button }">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ItemIsFavorite}" Value="True">
+                                <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidBrush}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                        <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}"/>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+            <Grid Grid.Row="6">
+                <Grid.RowDefinitions>
+                    <RowDefinition Name="VisibleRowSelectedWeapon" Height="0"/>
+                    <RowDefinition/>
+                    <RowDefinition Name="VisibleRowOptionManual" Height="0"/>
+                    <RowDefinition Name="VisibleRowOptionArtist" Height="auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+
+                <CheckBox 
+                    Name="OffhandCheckBox"
+                    Grid.Column="1" 
+                    Content="Weapon in offhand"
+                    Margin="5,0"/>
+
+                <Button 
+                    Name="LoadSWFButton"
+                    Grid.Row="1"
+                    Margin="3"
+                    Content="Load Item"
+                    Click="LoadSWFButton_Click"/>
+
+                <Button
+                    Name="ManualLoadButton"
+                    Grid.Row="2"
+                    Content="Manual Load"
+                    Margin="2"
+                    Click="ManualLoadButton_Click"/>
+
+                <Grid Grid.Row="3">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Name="VisibileColOptionAssets" Width="0"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock
+                        Grid.Column="0"
+                        Text="Item"
+                        Margin="3"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"/>
+                    <Button 
+                        Grid.Column="1" 
+                        Name="DownloadSWFButton" 
+                        Margin="3" 
+                        Content="*.SWF"
+                        Click="DownloadSWFButton_Click"/>
+                    <Button 
+                        Grid.Column="2" 
+                        Name="DownloadAssetsButton" 
+                        Margin="3" 
+                        Content="Assets"
+                        Click="DownloadAssetsButton_Click"/>
+
+                    <TextBlock
+                        Grid.Column="0"
+                        Grid.Row="1"
+                        Text="Map"
+                        Margin="3"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"/>
+                    <Button
+                        Name="MapSWFButton"
+                        Grid.Column="1" 
+                        Grid.Row="1"
+                        Content="*.SWF"
+                        Margin="3"
+                        Click="MapSWFButton_Click"/>
+                    <Button
+                        Name="MapAssetsButton"
+                        Grid.Column="2"
+                        Grid.Row="1"
+                        Content="Assets"
+                        Margin="3"
+                        Click="MapAssetsButton_Click"/>
+
+                    <TextBlock
+                        Grid.Column="0"
+                        Grid.Row="2"
+                        Text="Monster"
+                        Margin="3"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"/>
+                    <Button
+                        Name="MonsterSWFButton"
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Content="*.SWF"
+                        Margin="3"
+                        Click="MonsterSWFButton_Click"/>
+                    <Button
+                        Name="MonsterAssetsButton"
+                        Grid.Column="2"
+                        Grid.Row="2"
+                        Content="Assets"
+                        Margin="3"
+                        Click="MonsterAssetsButton_Click"/>
+                </Grid>
+
+                <Button 
+                    Grid.Row="4" 
+                    Name="OpenWikiButton" 
+                    Margin="3" 
+                    Content="Open Wiki"
+                    Click="OpenWikiButton_Click"/>
+            </Grid>
+        </Grid>
+
+    </Grid>
+</UserControl>

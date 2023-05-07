@@ -1,0 +1,32 @@
+﻿Still need to make:
+	Main Menu
+		Sets
+	Data Menu:
+		? Item Previewer
+			? In-game
+			? Wiki Scraper
+	Upload Menu
+		New Source
+			Player Target
+			Current Drops (waiting for Skua release with updated ItemBase)
+	Options
+		? Item Preview toggle
+		Cache database
+		Passive parsing
+		Artist Mode
+			Download All SWFs
+			Download All Assets
+
+FrontEnd Suggestions
+	Main Menu
+		Change button style to match Skua Tab view
+	Load Menu
+		DataGrid
+			Pagnation for sake of bigger thumb on scrollwheel
+		Sidebar
+			Item Previewer
+	
+Bugs:
+	Randomizer to LoadCtrl
+		Using the web buttons (swf file and wiki) after a clicking the text to preview it in the LoadCtrl will do nothing untill the item is re-selected
+		Randomizing selected /w main wep and offhand wep makes the two conflict
