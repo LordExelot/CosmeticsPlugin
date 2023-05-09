@@ -4,6 +4,8 @@ using System.Collections;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+using Skua.Core.Utils;
 using static Skua_CosmeticPlugin.CosmeticsMainWindow;
 
 namespace Skua_CosmeticPlugin.View.UserControls
@@ -18,72 +20,94 @@ namespace Skua_CosmeticPlugin.View.UserControls
         {
             InitializeComponent();
             DataContext = this;
+
             SavedSetsTreeView.ItemsSource = MakeList();
             Rune.Title.Text = "Ground Rune";
             Rune.DivisionLine.Height = new(0);
+
+            Helm.DataContext = SelectedSet?.Helm;
+            Armor.DataContext = SelectedSet?.Armor;
+            Cape.DataContext = SelectedSet?.Cape;
+            Weapon.DataContext = SelectedSet?.Weapon;
+            Pet.DataContext = SelectedSet?.Pet;
+            Rune.DataContext = SelectedSet?.Rune;
+
+            //Loaded += SavedSWFsControl_Loaded;
+        }
+
+        private void SavedSWFsControl_Loaded(object sender, RoutedEventArgs e)
+        {
         }
 
         private static List<TreeViewItem> MakeList()
         {
-            if (!File.Exists(System.IO.Path.Combine(DirectoryPath, "Sets.json")))
-                return new();
-            List<Set>? sets = JsonConvert.DeserializeObject<List<Set>>(File.ReadAllText(System.IO.Path.Combine(DirectoryPath, "Sets.json")));
-            if (sets == null)
-                return new();
-            List<TreeViewItem> toReturn = new();
-
-            foreach (var set in sets.OrderBy(x => x.Index))
+            try
             {
-                var setItems = new List<TreeViewItem>();
-                foreach (var item in set.Items.OrderBy(x => x.Index))
+                if (!File.Exists(System.IO.Path.Combine(DirectoryPath, "Sets.json")))
+                    return new();
+                List<Set>? sets = JsonConvert.DeserializeObject<List<Set>>(File.ReadAllText(System.IO.Path.Combine(DirectoryPath, "Sets.json")));
+                if (sets == null)
+                    return new();
+                List<TreeViewItem> toReturn = new();
+
+                foreach (var set in sets.OrderBy(x => x.Index))
                 {
-                    bool manual = item.ID == 0;
-                    bool offHand = item.offHand == true;
-                    setItems.Add(new TreeViewItem()
+                    var setItems = new List<TreeViewItem>();
+                    foreach (var item in set.Items)
                     {
-                        // Set items
-                        Header = $"({item.Category})\t{item.Name}" +
-                                (manual || offHand ? "\n" : String.Empty) +
-                                (manual ? "[Manual]" : String.Empty) +
-                                (manual && offHand ? "\t" : String.Empty) +
-                                (offHand ? "[Offhand]" : String.Empty),
-                        ItemsSource =
-                        (
-                            manual ?
-                                new List<TreeViewItem>()
-                                {
+                        bool manual = item.ID == 0;
+                        bool offHand = item.offHand == true;
+                        setItems.Add(new TreeViewItem()
+                        {
+                            // Set items
+                            Header = $"({item.Category})\t{item.name}" +
+                                    (manual || offHand ? "\n" : String.Empty) +
+                                    (manual ? "[Manual]" : String.Empty) +
+                                    (manual && offHand ? "\t" : String.Empty) +
+                                    (offHand ? "[Offhand]" : String.Empty),
+                            ItemsSource =
+                            (
+                                manual ?
+                                    new List<TreeViewItem>()
+                                    {
                                     // Item Data
-                                    new TreeViewItem() { Header = "Name\t" + item.Name, Padding = itemDataPadding },
+                                    new TreeViewItem() { Header = "Name\t" + item.name, Padding = itemDataPadding },
                                     new TreeViewItem() { Header = "sFile\t" + item.Path, Padding = itemDataPadding },
                                     new TreeViewItem() { Header = "sLink\t" + item.Link, Padding = itemDataPadding }
-                                } :
-                                new List<TreeViewItem>()
-                                {
+                                    } :
+                                    new List<TreeViewItem>()
+                                    {
                                     // Item Data
-                                    new TreeViewItem() { Header = "Name\t" + item.Name, Padding = itemDataPadding },
+                                    new TreeViewItem() { Header = "Name\t" + item.name, Padding = itemDataPadding },
                                     new TreeViewItem() { Header = "ID\t" + item.ID, Padding = itemDataPadding },
                                     new TreeViewItem() { Header = "sFile\t" + item.Path, Padding = itemDataPadding },
                                     new TreeViewItem() { Header = "sLink\t" + item.Link, Padding = itemDataPadding }
-                                }
-                        )
+                                    }
+                            )
+                        });
+                    }
+
+                    toReturn.Add(new TreeViewItem()
+                    {
+                        // Main set object
+                        Header = set.Name,
+                        ItemsSource = setItems
                     });
                 }
 
+                // New set option
                 toReturn.Add(new TreeViewItem()
                 {
-                    // Main set object
-                    Header = set.Name,
-                    ItemsSource = setItems
+                    Header = "Add new set",
                 });
+
+                return toReturn;
             }
-
-            // New set option
-            toReturn.Add(new TreeViewItem()
+            catch
             {
-                Header = "Add new set",
-            });
-
-            return toReturn;
+                Bot.ShowMessageBox("Invalid JSON in \"Skua/plugins/options/Cosmetics Plugin/Sets.json\"", "Error");
+                return new();
+            }
         }
         private static readonly Thickness itemDataPadding = new(0, 1, 0, 1);
 
@@ -164,12 +188,32 @@ namespace Skua_CosmeticPlugin.View.UserControls
         }
         private string[]? PlayerAPIData;
 
+        private void SavedSetsTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            if (e.NewValue is TreeViewItem item)
+            {
+                // Fetching the top most treeview item to get the title set
+                DependencyObject? parent = VisualTreeHelper.GetParent(item);
+                TreeViewItem? toSet = SavedSetsTreeView.SelectedItem as TreeViewItem;
+
+                while (parent is not TreeView)
+                {
+                    parent = VisualTreeHelper.GetParent(parent);
+                    if (parent is TreeViewItem)
+                        toSet = parent as TreeViewItem;
+                }
+
+                // Setting the selected item as the found set
+                SelectedSet = new(toSet!);
+            }
+        }
+
         private Set? _selectedSet;
         public Set? SelectedSet
         {
             get
             {
-                return _selectedSet ??= SavedSetsTreeView.SelectedItem as Set;
+                return _selectedSet;
             }
             set
             {
@@ -189,10 +233,127 @@ namespace Skua_CosmeticPlugin.View.UserControls
 
             [JsonProperty("items")]
             public List<SetItem> Items { get; set; }
+            //{ 
+            //    get
+            //    {
+            //        return new[] { Helm, Armor, Cape, Weapon, Pet, Rune }.Where(x => x != null).ToList();
+            //    }
+            //}
 
-            public Set()
+#nullable enable
+            public SetItem? Helm
             {
+                get
+                {
+                    return Items.Find(x => x.Category == ItemCategory.Helm);
+                }
+                set
+                {
+                    Items.RemoveAll(x => x.Category == ItemCategory.Helm);
+                    Items.Add(value);
+                }
+            }
+            public SetItem? Armor
+            {
+                get
+                {
+                    return Items.Find(x => x.Category == ItemCategory.Armor || x.Category == ItemCategory.Class);
+                }
+                set
+                {
+                    Items.RemoveAll(x => x.Category == ItemCategory.Armor || x.Category == ItemCategory.Class);
+                    Items.Add(value);
+                }
+            }
+            public SetItem? Cape
+            {
+                get
+                {
+                    return Items.Find(x => x.Category == ItemCategory.Cape);
+                }
+                set
+                {
+                    Items.RemoveAll(x => x.Category == ItemCategory.Cape);
+                    Items.Add(value);
+                }
+            }
+            public SetItem? Weapon
+            {
+                get
+                {
+                    return Items.Find(x => WeaponCategories.Contains(x.Category));
+                }
+                set
+                {
+                    Items.RemoveAll(x => WeaponCategories.Contains(x.Category));
+                    Items.Add(value);
+                }
+            }
+            public SetItem? Pet
+            {
+                get
+                {
+                    return Items.Find(x => x.Category == ItemCategory.Pet);
+                }
+                set
+                {
+                    Items.RemoveAll(x => x.Category == ItemCategory.Pet);
+                    Items.Add(value);
+                }
+            }
+            public SetItem? Rune
+            {
+                get
+                {
+                    return Items.Find(x => x.Category == ItemCategory.Misc);
+                }
+                set
+                {
+                    Items.RemoveAll(x => x.Category == ItemCategory.Misc);
+                    Items.Add(value);
+                }
+            }
 
+            public Set() { }
+            public Set(TreeViewItem tree)
+            {
+                //string toSerialize = "{";
+                //toSerialize += $"\"index\":{SavedSWFsControl.Instance.SavedSetsTreeView.Items.IndexOf(tree)}";
+                //toSerialize += $"\"name\":{tree.Header}";
+
+                //foreach (TreeViewItem t1 in tree.Items)
+                //{
+                //    toSerialize += $"\"{t1.Header.ToString()!.Split(')').First()[1..].ToLower()}\":";
+                //    Dictionary<string, string> toConvert = new();
+                //    foreach (TreeViewItem t2 in t1.Items)
+                //    {
+                //        string[] s = t2.ToString()[44..^14].Split('\t');
+                //        toConvert.Add(s[0] == "Name" ? "name" : s[0], s[1]);
+                //    }
+
+                //    toSerialize += JsonConvert.SerializeObject(toConvert)));
+                //}
+
+                Index = SavedSWFsControl.Instance.SavedSetsTreeView.Items.IndexOf(tree);
+                Name = tree.Header.ToString();
+                Items = new();
+
+                // Converting the treeviewitem back into a setItem via dictionary
+                foreach (TreeViewItem t1 in tree.Items)
+                {
+                    Dictionary<string, string> toConvert = new();
+                    foreach (TreeViewItem t2 in t1.Items)
+                    {
+                        string[] s = t2.ToString()[44..^14].Split('\t');
+                        toConvert.Add(s[0] == "Name" ? "name" : s[0], s[1]);
+                    }
+                    Items.Add(JsonConvert.DeserializeObject<SetItem>(JsonConvert.SerializeObject(toConvert)));
+                }
+            }
+
+            public override string ToString()
+            {
+                return $"[{Index}] {Name}\n - {Items.Select(x => x.name).Join("\n - ")}";
             }
         }
 

@@ -25,7 +25,8 @@
         </Grid.ColumnDefinitions>
 
         <TreeView
-            Name="SavedSetsTreeView">
+            Name="SavedSetsTreeView"
+            SelectedItemChanged="SavedSetsTreeView_SelectedItemChanged">
             <TreeView.ItemContainerStyle>
                 <Style
                     BasedOn="{StaticResource { x:Type TreeViewItem }}"
@@ -36,7 +37,7 @@
                             <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidForegroundBrush}"/>
                             <Setter Property="Background" Value="{DynamicResource PrimaryHueMidBrush}"/>
                         </Trigger>
-                    </Style.Triggers> 
+                    </Style.Triggers>
                 </Style>
             </TreeView.ItemContainerStyle>
         </TreeView>
@@ -62,12 +63,35 @@
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
+            <StackPanel HorizontalAlignment="Left"
+                        Orientation="Horizontal"
+                        Margin="0,0,3,0">
+                <Button Content="+"
+                        Padding="11,0"
+                        BorderThickness="0"
+                        Background="Transparent"
+                        Foreground="{DynamicResource PrimaryHueMidBrush}"/>
+                <Button Content="📌"
+                        Padding="6"
+                        BorderThickness="0"
+                        Background="Transparent"
+                        Foreground="{DynamicResource PrimaryHueMidBrush}"/>
+            </StackPanel>
             <TextBox
                 Margin="75,0,75,5"
                 HorizontalContentAlignment="Center"
                 MaxLength="40"
                 materialDesign:TextFieldAssist.CharacterCounterVisibility="Hidden">
             </TextBox>
+            <StackPanel HorizontalAlignment="Right"
+                        Orientation="Horizontal"
+                        Margin="0,0,3,0">
+                <Button Content="🗑️"
+                        Padding="6"
+                        BorderThickness="0"
+                        Background="Transparent"
+                        Foreground="{DynamicResource PrimaryHueMidBrush}"/>
+            </StackPanel>
 
             <local:SetItem x:Name="Helm" Grid.Row="1"/>
             <local:SetItem x:Name="Armor" Grid.Row="2"/>
