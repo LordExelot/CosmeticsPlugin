@@ -35,7 +35,7 @@
             VerticalAlignment="Top"
             FontWeight="Bold"
             FontSize="13"
-            Text="{Binding Name}"
+            Text="{Binding {x:Reference Name}}"
             d:Text="Sample Cat"/>
 
         <Grid Grid.Row="1">
@@ -44,20 +44,28 @@
                 <ColumnDefinition Width="1.5*"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock
-                Name="ItemID"
+            <DockPanel
                 Margin="0,-15,5,0"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Right"
-                Text="[12345]"/>
-            
+                >
+
+                <TextBlock Text="["/>
+                <TextBlock
+                Name="ItemID"
+                Text="{Binding ID}"
+                d:Text="12345"/>
+                <TextBlock Text="]"/>
+            </DockPanel>
+
             <TextBlock
                 Name="ItemName"
                 Grid.Column="1"
                 Margin="5,-15,0,0"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Left"
-                Text="Sample Item Name"/>
+                Text="{Binding name}"
+                d:Text="Sample Item Name"/>
         </Grid>
 
         <Button
