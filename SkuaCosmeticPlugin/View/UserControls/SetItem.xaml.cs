@@ -15,19 +15,16 @@ namespace Skua_CosmeticPlugin.View.UserControls
             DataContext = this;
         }
 
-        [JsonProperty("index")]
-        public int Index { get; set; }
-
         [JsonProperty("id")]
         public int ID { get; set; }
 
-        [JsonProperty("name")]
-        public string Name { get; set; }
+        [JsonProperty(nameof(name))]
+        public string name { get; set; }
 
-        [JsonProperty("path")]
+        [JsonProperty("sFile")]
         public string Path { get; set; }
 
-        [JsonProperty("link")]
+        [JsonProperty("sLink")]
         public string Link { get; set; }
 
         [JsonProperty("category")]
