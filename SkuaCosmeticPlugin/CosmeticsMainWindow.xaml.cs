@@ -262,5 +262,22 @@ namespace Skua_CosmeticPlugin
             e.Cancel = true;
             this.Hide();
         }
+
+        public readonly static ItemCategory[] WeaponCategories =
+        {
+            ItemCategory.Axe,
+            ItemCategory.Bow,
+            ItemCategory.Dagger,
+            ItemCategory.Gauntlet,
+            ItemCategory.Gun,
+            ItemCategory.HandGun,
+            ItemCategory.Mace,
+            ItemCategory.Polearm,
+            ItemCategory.Rifle,
+            ItemCategory.Staff,
+            ItemCategory.Sword,
+            ItemCategory.Wand,
+            ItemCategory.Whip,
+        };
     }
 }
