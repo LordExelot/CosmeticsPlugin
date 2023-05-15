@@ -6,6 +6,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Skua.Core.Utils;
+using CommunityToolkit.Mvvm.ComponentModel;
+using System.ComponentModel;
+using System.Net.Sockets;
 using static Skua_CosmeticPlugin.CosmeticsMainWindow;
 
 namespace Skua_CosmeticPlugin.View.UserControls
@@ -223,7 +226,8 @@ namespace Skua_CosmeticPlugin.View.UserControls
         }
 
 #nullable disable
-        public class Set
+        [ObservableObject]
+        public partial class Set
         {
             [JsonProperty("index")]
             public int Index { get; set; }
@@ -251,6 +255,7 @@ namespace Skua_CosmeticPlugin.View.UserControls
                 {
                     Items.RemoveAll(x => x.Category == ItemCategory.Helm);
                     Items.Add(value);
+                    OnPropertyChanged(nameof(Helm));
                 }
             }
             public SetItem? Armor
@@ -349,6 +354,9 @@ namespace Skua_CosmeticPlugin.View.UserControls
                     }
                     Items.Add(JsonConvert.DeserializeObject<SetItem>(JsonConvert.SerializeObject(toConvert)));
                 }
+                Bot.Log(Items.Count().ToString());
+                Bot.Log(Items.Any(x => x.Category == ItemCategory.Helm).ToString());
+                //Items.Find(x => x.Category == ItemCategory.Helm);
             }
 
             public override string ToString()

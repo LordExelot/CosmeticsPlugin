@@ -93,7 +93,7 @@
                         Foreground="{DynamicResource PrimaryHueMidBrush}"/>
             </StackPanel>
 
-            <local:SetItem x:Name="Helm" Grid.Row="1"/>
+            <local:SetItem x:Name="Helm" Grid.Row="1" DataContext="{Binding SelectedSet.Helm}"/>
             <local:SetItem x:Name="Armor" Grid.Row="2"/>
             <local:SetItem x:Name="Cape" Grid.Row="3"/>
             <local:SetItem x:Name="Weapon" Grid.Row="4"/>

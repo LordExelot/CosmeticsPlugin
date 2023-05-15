@@ -35,7 +35,7 @@
             VerticalAlignment="Top"
             FontWeight="Bold"
             FontSize="13"
-            Text="{Binding {x:Reference Name}}"
+            Text="{Binding Name}"
             d:Text="Sample Cat"/>
 
         <Grid Grid.Row="1">
@@ -53,7 +53,7 @@
                 <TextBlock Text="["/>
                 <TextBlock
                 Name="ItemID"
-                Text="{Binding ID}"
+                Text="{Binding ID, UpdateSourceTrigger=PropertyChanged}"
                 d:Text="12345"/>
                 <TextBlock Text="]"/>
             </DockPanel>
@@ -64,7 +64,7 @@
                 Margin="5,-15,0,0"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Left"
-                Text="{Binding name}"
+                Text="{Binding name, UpdateSourceTrigger=PropertyChanged}"
                 d:Text="Sample Item Name"/>
         </Grid>
 

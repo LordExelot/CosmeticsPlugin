@@ -112,15 +112,15 @@
 
                     <CheckBox 
                     Grid.Row="0"
-                    Content="Parse a Shop's Items it's are loaded"
+                    Content="Parse a Shop's Items upon load"
                     Name="PassiveParseShopCheck"
                     Checked="PassiveParseShopCheck_Event"
                     Unchecked="PassiveParseShopCheck_Event" 
-                    Loaded="PassiveParseShopCheck_Loaded"/>
+                    Loaded="PassiveParseShopCheck_Loaded" Height="18" VerticalAlignment="Top"/>
 
                     <CheckBox 
                     Grid.Row="1"
-                    Content="Parse a Quests's Items it's are loaded"
+                    Content="Parse a Quests's Items upon load"
                     Name="PassiveParseQuestCheck"
                     Checked="PassiveParseQuestCheck_Event"
                     Unchecked="PassiveParseQuestCheck_Event" 
