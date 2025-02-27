@@ -34,9 +34,16 @@ namespace Skua_CosmeticsPlugin
 
             helper.AddMenuButton(Name, () =>
             {
-                CosmeticsMainWindow.Instance.Show();
-                CosmeticsMainWindow.Instance.BringIntoView();
-                CosmeticsMainWindow.Instance.Activate();
+                try
+                {
+                    CosmeticsMainWindow.Instance?.Show();
+                    CosmeticsMainWindow.Instance?.BringIntoView();
+                    CosmeticsMainWindow.Instance?.Activate();
+                }
+                catch (Exception ex)
+                {
+                    Bot?.Log($"Error showing {Name} window: {ex.Message}");
+                }
             });
 
             Logger("Plugin", "Loaded");

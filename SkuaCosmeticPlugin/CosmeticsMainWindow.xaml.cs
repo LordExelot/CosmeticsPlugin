@@ -6,6 +6,7 @@ using Skua.Core.Models.Items;
 using Skua.WPF;
 using Skua_CosmeticPlugin.View.UserControls;
 using Skua_CosmeticsPlugin;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
@@ -257,10 +258,10 @@ namespace Skua_CosmeticPlugin
         public static GridLength ShowGridIfTrue(bool _bool) => new(0, _bool ? GridUnitType.Auto : GridUnitType.Pixel);
 
         #endregion
-        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void MainWindow_Closing(object sender, CancelEventArgs e)
         {
             e.Cancel = true;
-            this.Hide();
+            Hide();
         }
 
         public readonly static ItemCategory[] WeaponCategories =
