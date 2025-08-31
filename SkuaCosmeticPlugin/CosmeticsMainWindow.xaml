@@ -9,11 +9,11 @@
     xmlns:UserControls="clr-namespace:Skua_CosmeticPlugin.View.UserControls"
     mc:Ignorable="d"
     Title="Cosmetics Plugin"
+    HideWindow="True"
     Style="{StaticResource CustomWindow}"
     Height="469"
     Width="800"
-    MinWidth="800"
-    Closing="MainWindow_Closing">
+    MinWidth="800">
 
     <wpf:CustomWindow.Resources>
         <ResourceDictionary Source="/Skua_CosmeticPlugin;component/ResourceDir.xaml"/>

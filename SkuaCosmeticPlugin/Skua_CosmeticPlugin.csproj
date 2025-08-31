@@ -24,21 +24,27 @@
   <ItemGroup>
     <Reference Include="Skua.Core">
       <HintPath>C:\Program Files\Skua\Skua AQW Bot\Assemblies\Skua.Core.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Skua.Core.Interfaces">
       <HintPath>C:\Program Files\Skua\Skua AQW Bot\Assemblies\Skua.Core.Interfaces.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Skua.Core.Models">
       <HintPath>C:\Program Files\Skua\Skua AQW Bot\Assemblies\Skua.Core.Models.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Skua.Core.Utils">
       <HintPath>C:\Program Files\Skua\Skua AQW Bot\Assemblies\Skua.Core.Utils.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Skua.WPF">
       <HintPath>C:\Program Files\Skua\Skua AQW Bot\Assemblies\Skua.WPF.dll</HintPath>
+      <Private>False</Private>
     </Reference>
 	<Reference Include="CommunityToolkit.Mvvm">
 	  <HintPath>C:\Program Files\Skua\Skua AQW Bot\Assemblies\CommunityToolkit.Mvvm.dll</HintPath>
+	  <Private>False</Private>
 	</Reference>
 	<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>

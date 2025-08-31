@@ -258,11 +258,6 @@ namespace Skua_CosmeticPlugin
         public static GridLength ShowGridIfTrue(bool _bool) => new(0, _bool ? GridUnitType.Auto : GridUnitType.Pixel);
 
         #endregion
-        private void MainWindow_Closing(object sender, CancelEventArgs e)
-        {
-            e.Cancel = true;
-            Hide();
-        }
 
         public readonly static ItemCategory[] WeaponCategories =
         {
