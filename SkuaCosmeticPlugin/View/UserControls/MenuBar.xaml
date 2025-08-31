@@ -2,7 +2,8 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:Skua_CosmeticPlugin.View.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="44" d:DesignWidth="800"
@@ -10,94 +11,23 @@
              d:Foreground="White"
              >
 
-    <UserControl.Resources>
-        <ResourceDictionary Source="/Skua_CosmeticPlugin;component/ResourceDir.xaml"/>
-    </UserControl.Resources>
-
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-
-        <Button
-            Name="ApplySWFButton"
-            Grid.Column="0"
-            VerticalAlignment="Center"
-            HorizontalAlignment="Stretch"
-            Margin="5,0" Click="ApplySWFButton_Click">
-            <Button.Content>
+    <ListBox
+        ItemsSource="{Binding TabItems, RelativeSource={RelativeSource AncestorType=Window}}"
+        SelectedItem="{Binding SelectedTabItem, RelativeSource={RelativeSource AncestorType=Window}}"
+        Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineListBox}">
+        <ListBox.ItemTemplate>
+            <DataTemplate>
                 <TextBlock
-                    Text="Load Items"
-                    FontSize="12"
-                    FontWeight="Bold"
-                    Height="22"/>
-            </Button.Content>
-        </Button>
-        
-        <Button
-            Name="AddSWFButton"
-            Grid.Column="1"
-            VerticalAlignment="Center"
-            HorizontalAlignment="Stretch"
-            Margin="5,0" Click="AddSWFButton_Click">
-            <Button.Content>
-                <TextBlock
-                    Text="Add Items"
-                    FontSize="12"
-                    FontWeight="Bold"
-                    Height="22"/>
-            </Button.Content>
-        </Button>
-        
-        <Button
-            Grid.Column="2"
-            VerticalAlignment="Center"
-            HorizontalAlignment="Stretch"
-            Margin="5,0" Click="Button_Click">
-            <Button.Content>
-                <TextBlock
-                    Text="Randomizer"
-                    FontSize="12"
-                    FontWeight="Bold"
-                    Height="22"/>
-            </Button.Content>
-        </Button>
-        
-        <Button
-            Grid.Column="3"
-            Name="SavedSWFButton"
-            VerticalAlignment="Center"
-            HorizontalAlignment="Stretch"
-            IsEnabled="True"
-            BorderBrush="LightCoral"
-            Margin="5,0" Click="SavedSWFButton_Click">
-            <Button.Content>
-                <TextBlock
-                    Text="Sets"
-                    FontSize="12"
-                    FontWeight="Bold"
-                    Height="22"/>
-            </Button.Content>
-        </Button>
-        
-        <Button
-            Name="OptionsButton"
-            Grid.Column="4"
-            VerticalAlignment="Center"
-            HorizontalAlignment="Stretch"
-            Margin="5,0"
-            Click="OptionsButton_Click">
-            <Button.Content>
-                <TextBlock
-                    Text="Options"
-                    FontSize="12"
-                    FontWeight="Bold"
-                    Height="22"/>
-            </Button.Content>
-        </Button>
-    </Grid>
+                    materialDesign:RippleAssist.IsDisabled="True"
+                    Style="{StaticResource MaterialDesignButtonTextBlock}"
+                    Text="{Binding Header}"
+                    TextAlignment="Center" />
+            </DataTemplate>
+        </ListBox.ItemTemplate>
+        <ListBox.ItemsPanel>
+            <ItemsPanelTemplate>
+                <StackPanel Orientation="Horizontal" />
+            </ItemsPanelTemplate>
+        </ListBox.ItemsPanel>
+    </ListBox>
 </UserControl>

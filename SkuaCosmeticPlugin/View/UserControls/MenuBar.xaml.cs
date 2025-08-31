@@ -1,5 +1,4 @@
-﻿using System.Windows.Controls;
-using static Skua_CosmeticPlugin.CosmeticsMainWindow;
+using System.Windows.Controls;
 
 namespace Skua_CosmeticPlugin.View.UserControls
 {
@@ -13,31 +12,6 @@ namespace Skua_CosmeticPlugin.View.UserControls
         public MenuBar()
         {
             InitializeComponent();
-        }
-
-        private void ApplySWFButton_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            Main.SelectedTab = LoadCtrl;
-        }
-        private void AddSWFButton_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            Main.SelectedTab = AddCtrl;
-        }
-
-        private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            Main.SelectedTab = RandCtrl;
-        }
-
-        private void OptionsButton_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            Main.SelectedTab = OptionsCtrl;
-            OptionsCtrl.AssignGender();
-        }
-
-        private void SavedSWFButton_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            Main.SelectedTab = SavedCtrl;
         }
     }
 }

@@ -1,7 +1,9 @@
-﻿using CommunityToolkit.Mvvm.DependencyInjection;
+using CommunityToolkit.Mvvm.DependencyInjection;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Skua.Core.Interfaces;
+using Skua.Core.Messaging;
 using Skua.Core.Models;
 using Skua.Core.Models.Items;
 using Skua.Core.Scripts;
@@ -15,7 +17,7 @@ using static Skua_CosmeticPlugin.CosmeticsMainWindow;
 
 namespace Skua_CosmeticsPlugin
 {
-    public class Loader : ISkuaPlugin
+    public class Loader : ISkuaPlugin, IRecipient<ItemDroppedMessage>, IRecipient<MapChangedMessage>, IRecipient<ExtensionPacketMessage>, IRecipient<ScriptStoppingMessage>
     {
         public static Loader Instance { get; } = new();
         public string Name => "Cosmetics Plugin";
@@ -29,45 +31,73 @@ namespace Skua_CosmeticsPlugin
         public IScriptInterface? Bot { get; private set; }
         public void Load(IServiceProvider provider, IPluginHelper helper)
         {
-            Bot = provider.GetRequiredService<IScriptInterface>();
-            this.helper = helper;
-
-            helper.AddMenuButton(Name, () =>
+            try
             {
-                try
-                {
-                    CosmeticsMainWindow.Instance?.Show();
-                    CosmeticsMainWindow.Instance?.BringIntoView();
-                    CosmeticsMainWindow.Instance?.Activate();
-                }
-                catch (Exception ex)
-                {
-                    Bot?.Log($"Error showing {Name} window: {ex.Message}");
-                }
-            });
+                Bot = provider.GetRequiredService<IScriptInterface>();
+                this.helper = helper;
 
-            Logger("Plugin", "Loaded");
+                helper.AddMenuButton(Name, () =>
+                {
+                    try
+                    {
+                        CosmeticsMainWindow.Instance?.Show();
+                        CosmeticsMainWindow.Instance?.BringIntoView();
+                        CosmeticsMainWindow.Instance?.Activate();
+                    }
+                    catch (Exception ex)
+                    {
+                        Bot?.Log($"Error showing {Name} window: {ex.Message}");
+                        Bot?.Log($"Stack trace: {ex.StackTrace}");
+                    }
+                });
 
-            Task.Run(async () =>
+                Logger("Plugin", "Load method started");
+
+                Task.Run(async () =>
+                {
+                    try
+                    {
+                        ThemeService = new ThemeService(provider.GetRequiredService<ThemeUserSettingsService>());
+                        var themeService = provider.GetRequiredService<IThemeService>();
+                        themeService.ThemeChanged += ThemeChanged;
+                        themeService.SchemeChanged += SchemeChanged;
+
+                        await PreInitSettings.Load();
+                        EnableMessengers();
+                        Logger("Plugin", "Initialization completed");
+                    }
+                    catch (Exception ex)
+                    {
+                        Bot?.Log($"Error during async initialization: {ex.Message}");
+                        Bot?.Log($"Stack trace: {ex.StackTrace}");
+                    }
+                });
+
+                Logger("Plugin", "Loaded successfully");
+            }
+            catch (Exception ex)
             {
-                ThemeService = new ThemeService(provider.GetRequiredService<ThemeUserSettingsService>());
-                var themeService = provider.GetRequiredService<IThemeService>();
-                themeService.ThemeChanged += ThemeChanged;
-                themeService.SchemeChanged += SchemeChanged;
-
-                await PreInitSettings.Load();
-                EnableEvents();
-            });
+                var bot = provider?.GetService<IScriptInterface>();
+                bot?.Log($"Critical error loading {Name}: {ex.Message}");
+                bot?.Log($"Stack trace: {ex.StackTrace}");
+                throw; // Re-throw to let Skua handle the error
+            }
         }
 
         public void Unload()
         {
+            // Unregister from messengers
+            StrongReferenceMessenger.Default.Unregister<ItemDroppedMessage, int>(this, (int)MessageChannels.GameEvents);
+            StrongReferenceMessenger.Default.Unregister<MapChangedMessage, int>(this, (int)MessageChannels.GameEvents);
+            StrongReferenceMessenger.Default.Unregister<ExtensionPacketMessage, int>(this, (int)MessageChannels.GameEvents);
+            StrongReferenceMessenger.Default.Unregister<ScriptStoppingMessage, int>(this, (int)MessageChannels.ScriptStatus);
+            
             helper!.RemoveMenuButton(Name);
             Logger("Plugin", "Unloaded");
         }
         #endregion
         #region Passive Parsing
-        private void EnableEvents()
+        private void EnableMessengers()
         {
             if (!PreInitSettings.Instance.PasParseDrop &&
                 !PreInitSettings.Instance.PasParseShop &&
@@ -76,28 +106,36 @@ namespace Skua_CosmeticsPlugin
                 !PreInitSettings.Instance.PasParseMap)
                 return;
 
-            if (!_eventsInit)
+            if (!_messengersInit)
             {
                 Application.Current.Dispatcher.Invoke(() => CosmeticsMainWindow.Instance.Hide());
                 (manager ??= Ioc.Default.GetRequiredService<IScriptManager>()).PropertyChanged += Manager_PropertyChanged;
             }
-            typeof(ScriptEvent).GetMethod("RegisterGameEvents", BindingFlags.NonPublic | BindingFlags.Instance)!.Invoke(Bot!.Events, null);
 
+            // Register for relevant messages based on settings
             if (PreInitSettings.Instance.PasParseDrop)
-                Bot!.Events.ItemDropped += Events_ItemDropped;
+                StrongReferenceMessenger.Default.Register<Loader, ItemDroppedMessage, int>(this, (int)MessageChannels.GameEvents, (recipient, message) => recipient.OnItemDropped(message));
+            
             if (PreInitSettings.Instance.PasParseMap)
-                Bot!.Events.MapChanged += Events_MapChanged;
+                StrongReferenceMessenger.Default.Register<Loader, MapChangedMessage, int>(this, (int)MessageChannels.GameEvents, (recipient, message) => recipient.OnMapChanged(message));
+            
             if (PreInitSettings.Instance.PasParseShop || PreInitSettings.Instance.PasParseQuest || PreInitSettings.Instance.PasParsePlayer)
-                Bot!.Events.ExtensionPacketReceived += Events_ExtensionPacketReceived;
-            Bot!.Events.ScriptStopping += Events_ScriptStopping;
+                StrongReferenceMessenger.Default.Register<Loader, ExtensionPacketMessage, int>(this, (int)MessageChannels.GameEvents, (recipient, message) => recipient.OnExtensionPacket(message));
+            
+            StrongReferenceMessenger.Default.Register<Loader, ScriptStoppingMessage, int>(this, (int)MessageChannels.ScriptStatus, (recipient, message) => recipient.OnScriptStopping(message));
 
-            _eventsInit = true;
+            _messengersInit = true;
         }
 
-        private void Events_MapChanged(string map)
+        public void Receive(MapChangedMessage message)
         {
-            AddCtrl.PassiveParseMapPlayers(map);
-            DebugLogger("pasParse Map " + map);
+            OnMapChanged(message);
+        }
+
+        private void OnMapChanged(MapChangedMessage message)
+        {
+            AddCtrl.PassiveParseMapPlayers(message.Map);
+            DebugLogger("pasParse Map " + message.Map);
         }
 
         private void Manager_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -106,21 +144,31 @@ namespace Skua_CosmeticsPlugin
                 typeof(ScriptEvent).GetMethod("UnregisterGameEvents", BindingFlags.NonPublic | BindingFlags.Instance)!.Invoke(Bot!.Events, null);
         }
 
-        private bool _eventsInit = false;
+        private bool _messengersInit = false;
         private IScriptManager? manager;
 
-        private bool Events_ScriptStopping(Exception? exception)
+        public void Receive(ScriptStoppingMessage message)
         {
-            Task.Run(() =>
-            {
-                Task.Delay(7500);
-                EnableEvents();
-            });
-            return true;
+            OnScriptStopping(message);
         }
 
-        private void Events_ExtensionPacketReceived(dynamic packet)
+        private void OnScriptStopping(ScriptStoppingMessage message)
         {
+            Task.Run(async () =>
+            {
+                await Task.Delay(7500);
+                EnableMessengers();
+            });
+        }
+
+        public void Receive(ExtensionPacketMessage message)
+        {
+            OnExtensionPacket(message);
+        }
+
+        private void OnExtensionPacket(ExtensionPacketMessage message)
+        {
+            dynamic packet = message.Packet;
             string type = packet["params"].type;
             dynamic data = packet["params"].dataObj;
             if (type is not null and "json")
@@ -161,9 +209,14 @@ namespace Skua_CosmeticsPlugin
             }
         }
 
-        private void Events_ItemDropped(ItemBase item, bool addedToInv, int quantityNow)
+        public void Receive(ItemDroppedMessage message)
         {
-            AddCtrl.PassiveParseItemBase(item);
+            OnItemDropped(message);
+        }
+
+        private void OnItemDropped(ItemDroppedMessage message)
+        {
+            AddCtrl.PassiveParseItemBase(message.Item);
             DebugLogger("pasParse Drop");
         }
         #endregion

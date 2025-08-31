@@ -15,10 +15,6 @@
     Width="800"
     MinWidth="800">
 
-    <wpf:CustomWindow.Resources>
-        <ResourceDictionary Source="/Skua_CosmeticPlugin;component/ResourceDir.xaml"/>
-    </wpf:CustomWindow.Resources>
-
     <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="44"/>

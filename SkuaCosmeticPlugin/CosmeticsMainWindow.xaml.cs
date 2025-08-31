@@ -1,11 +1,13 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 using Skua.Core.Interfaces;
 using Skua.Core.Models;
 using Skua.Core.Models.Items;
 using Skua.WPF;
 using Skua_CosmeticPlugin.View.UserControls;
+using Skua_CosmeticPlugin.Models;
 using Skua_CosmeticsPlugin;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -46,12 +48,51 @@ namespace Skua_CosmeticPlugin
         public CosmeticsMainWindow()
         {
             InitializeComponent();
-            SelectedTab = LoadCtrl;
+            InitializeTabs();
             DataContext = this;
             WebC.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0");
         }
 
+        private void InitializeTabs()
+        {
+            TabItems = new ObservableCollection<Models.TabItem>
+            {
+                new Models.TabItem("Load Items", LoadCtrl),
+                new Models.TabItem("Add Items", AddCtrl),
+                new Models.TabItem("Randomizer", RandCtrl),
+                new Models.TabItem("Sets", SavedCtrl),
+                new Models.TabItem("Options", OptionsCtrl)
+            };
+            SelectedTabItem = TabItems[0];
+        }
+
         #endregion
+
+        private ObservableCollection<Models.TabItem> _tabItems = new();
+        public ObservableCollection<Models.TabItem> TabItems
+        {
+            get { return _tabItems; }
+            set { SetProperty(ref _tabItems, value); }
+        }
+
+        private Models.TabItem? _selectedTabItem;
+        public Models.TabItem? SelectedTabItem
+        {
+            get { return _selectedTabItem; }
+            set 
+            { 
+                SetProperty(ref _selectedTabItem, value);
+                if (value != null)
+                {
+                    SelectedTab = value.Content;
+                    // Handle special case for Options tab
+                    if (value.Content == OptionsCtrl)
+                    {
+                        OptionsCtrl.AssignGender();
+                    }
+                }
+            }
+        }
 
         //[ObservableProperty]
         private FrameworkElement? _selectedTab;

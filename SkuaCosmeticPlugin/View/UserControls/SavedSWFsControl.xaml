@@ -24,9 +24,25 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <TreeView
-            Name="SavedSetsTreeView"
-            SelectedItemChanged="SavedSetsTreeView_SelectedItemChanged">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            
+            <!-- Search bar -->
+            <TextBox
+                Name="SearchTextBox"
+                Margin="5"
+                materialDesign:HintAssist.Hint="Search sets..."
+                materialDesign:TextFieldAssist.HasClearButton="True"
+                TextChanged="SearchTextBox_TextChanged"/>
+            
+            <!-- TreeView for saved sets -->
+            <TreeView
+                Name="SavedSetsTreeView"
+                Grid.Row="1"
+                SelectedItemChanged="SavedSetsTreeView_SelectedItemChanged">
             <TreeView.ItemContainerStyle>
                 <Style
                     BasedOn="{StaticResource { x:Type TreeViewItem }}"
@@ -41,6 +57,7 @@
                 </Style>
             </TreeView.ItemContainerStyle>
         </TreeView>
+        </Grid>
 
         <Line
             Stroke="{DynamicResource PrimaryHueMidBrush}"
@@ -67,38 +84,50 @@
                         Orientation="Horizontal"
                         Margin="0,0,3,0">
                 <Button Content="+"
+                        Name="AddSetButton"
                         Padding="11,0"
                         BorderThickness="0"
                         Background="Transparent"
-                        Foreground="{DynamicResource PrimaryHueMidBrush}"/>
+                        Foreground="{DynamicResource PrimaryHueMidBrush}"
+                        Click="AddSetButton_Click"
+                        ToolTip="Add currently loaded items as new set"/>
                 <Button Content="📌"
+                        Name="PinSetButton"
                         Padding="6"
                         BorderThickness="0"
                         Background="Transparent"
-                        Foreground="{DynamicResource PrimaryHueMidBrush}"/>
+                        Foreground="{DynamicResource PrimaryHueMidBrush}"
+                        Click="PinSetButton_Click"
+                        ToolTip="Pin set to top"/>
             </StackPanel>
             <TextBox
+                Name="SetNameTextBox"
                 Margin="75,0,75,5"
                 HorizontalContentAlignment="Center"
                 MaxLength="40"
-                materialDesign:TextFieldAssist.CharacterCounterVisibility="Hidden">
-            </TextBox>
+                materialDesign:HintAssist.Hint="Set name"
+                materialDesign:TextFieldAssist.CharacterCounterVisibility="Hidden"
+                ToolTip="Set name"/>
             <StackPanel HorizontalAlignment="Right"
                         Orientation="Horizontal"
                         Margin="0,0,3,0">
                 <Button Content="🗑️"
+                        Name="DeleteSetButton"
                         Padding="6"
                         BorderThickness="0"
                         Background="Transparent"
-                        Foreground="{DynamicResource PrimaryHueMidBrush}"/>
+                        Foreground="{DynamicResource PrimaryHueMidBrush}"
+                        Click="DeleteSetButton_Click"
+                        ToolTip="Delete selected set"/>
             </StackPanel>
 
-            <local:SetItem x:Name="Helm" Grid.Row="1" DataContext="{Binding SelectedSet.Helm}"/>
-            <local:SetItem x:Name="Armor" Grid.Row="2"/>
-            <local:SetItem x:Name="Cape" Grid.Row="3"/>
-            <local:SetItem x:Name="Weapon" Grid.Row="4"/>
-            <local:SetItem x:Name="Pet" Grid.Row="5"/>
-            <local:SetItem x:Name="Rune" Grid.Row="6"/>
+            <local:SetItem x:Name="Helm" Grid.Row="1" DataContext="{Binding CurrentHelm}"/>
+            <local:SetItem x:Name="Armor" Grid.Row="2" DataContext="{Binding CurrentArmor}"/>
+            <local:SetItem x:Name="Cape" Grid.Row="3" DataContext="{Binding CurrentCape}"/>
+            <local:SetItem x:Name="Weapon" Grid.Row="4" DataContext="{Binding CurrentWeapon}"/>
+            <local:SetItem x:Name="Pet" Grid.Row="5" DataContext="{Binding CurrentPet}"/>
+            <local:SetItem x:Name="Rune" Grid.Row="6" DataContext="{Binding CurrentRune}"/>
+
 
             <Grid Grid.Row="7">
                 <Grid.ColumnDefinitions>
@@ -107,14 +136,18 @@
                 </Grid.ColumnDefinitions>
 
                 <Button
-                    Name="SetEditButton"
-                    Content="Edit Set"
-                    Margin="5,0"/>
+                    Name="SetUpdateButton"
+                    Content="Update Set"
+                    Margin="5,0"
+                    Click="SetUpdateButton_Click"
+                    ToolTip="Edit the selected set contents"/>
                 <Button
                     Grid.Column="1"
                     Name="SetLoadButton"
                     Content="Load Set"
-                    Margin="5,0"/>
+                    Margin="5,0"
+                    Click="SetLoadButton_Click"
+                    ToolTip="Load selected set to character"/>
             </Grid>
         </Grid>
     </Grid>

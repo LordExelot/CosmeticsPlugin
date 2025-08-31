@@ -108,6 +108,11 @@ namespace Skua_CosmeticPlugin.View.UserControls
                         });
                     }
                 }
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    SavedSWFsControl.Instance.UpdateLoadedItem(item);
+                });
+
             });
         }
         public bool loadAllowed = true;

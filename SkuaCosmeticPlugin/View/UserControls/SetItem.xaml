@@ -19,7 +19,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
-            <RowDefinition Height="Auto" Name="DivisionLine"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -35,7 +35,7 @@
             VerticalAlignment="Top"
             FontWeight="Bold"
             FontSize="13"
-            Text="{Binding Name}"
+            Text="{Binding name}"
             d:Text="Sample Cat"/>
 
         <Grid Grid.Row="1">
@@ -74,7 +74,9 @@
             Content="🔗"
             Padding="7,0"
             Margin="0,0,3,0"
-            Grid.RowSpan="3"/>
+            Grid.RowSpan="3"
+            Click="LinkButton_Click"
+            ToolTip="Navigate to this item in Load Items tab"/>
 
         <Line
             X1="0" Y1="0"

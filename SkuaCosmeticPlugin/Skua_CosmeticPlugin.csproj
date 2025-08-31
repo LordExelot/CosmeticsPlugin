@@ -73,4 +73,8 @@
     <Exec Command="$(ILMergeConsolePath) /out:obj\Release\net6.0-windows\Skua_CosmeticPlugin2.dll obj\Release\net6.0-windows\Skua_CosmeticPlugin.dll bin\Debug\net6.0-windows\Google.Protobuf.dll" />
   </Target>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="if exist &quot;%25USERPROFILE%25\OneDrive\Documents\Skua&quot; copy /Y &quot;$(OutputPath)$(AssemblyName).dll&quot; &quot;%25USERPROFILE%25\OneDrive\Documents\Skua\plugins\$(AssemblyName).dll&quot;&#xD;&#xA;if exist &quot;%25USERPROFILE%25\Documents\Skua&quot; copy /Y &quot;$(OutputPath)$(AssemblyName).dll&quot; &quot;%25USERPROFILE%25\Documents\Skua\plugins\$(AssemblyName).dll&quot;" />
+  </Target>
+
 </Project>

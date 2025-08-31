@@ -29,7 +29,8 @@ namespace Skua_CosmeticPlugin.View.UserControls
             if (randomItem == null)
                 return;
 
-            Main.SelectedTab = LoadCtrl;
+            // Switch to Load Items tab
+            Main.SelectedTabItem = Main.TabItems.FirstOrDefault(t => t.Content == LoadCtrl);
             DataCtrl.FavoritesShown = false;
             //LoadCtrl.DataSheet.setMenuToAll();
             DataCtrl.SearchBar.Text = randomItem.ID.ToString();
