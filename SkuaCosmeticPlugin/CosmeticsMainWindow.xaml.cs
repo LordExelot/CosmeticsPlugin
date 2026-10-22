@@ -13,6 +13,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
+using System.Runtime.CompilerServices;
 using System.Windows;
 
 namespace Skua_CosmeticPlugin
@@ -20,8 +21,7 @@ namespace Skua_CosmeticPlugin
     /// <summary>
     /// Interaction logic for CosmeticsMainWindow.xaml
     /// </summary>
-    [INotifyPropertyChanged]
-    public sealed partial class CosmeticsMainWindow : CustomWindow
+    public sealed partial class CosmeticsMainWindow : CustomWindow, INotifyPropertyChanged
     {
         #region Declirations
         private static CosmeticsMainWindow? _instance;
@@ -67,6 +67,20 @@ namespace Skua_CosmeticPlugin
         }
 
         #endregion
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string? propertyName = null) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        protected bool SetProperty<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
+        {
+            if (EqualityComparer<T>.Default.Equals(field, value))
+                return false;
+            field = value;
+            OnPropertyChanged(propertyName);
+            return true;
+        }
 
         private ObservableCollection<Models.TabItem> _tabItems = new();
         public ObservableCollection<Models.TabItem> TabItems

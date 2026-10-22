@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Skua.Core.Models.Items;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.IO;
 using System.Net.Sockets;
 using System.Windows;
@@ -11,9 +12,22 @@ using static Skua_CosmeticPlugin.CosmeticsMainWindow;
 
 namespace Skua_CosmeticPlugin.View.UserControls
 {
-    [INotifyPropertyChanged]
-    public partial class DataSheet : UserControl
+    public partial class DataSheet : UserControl, INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string? propertyName = null) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        protected bool SetProperty<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
+        {
+            if (EqualityComparer<T>.Default.Equals(field, value))
+                return false;
+            field = value;
+            OnPropertyChanged(propertyName);
+            return true;
+        }
+
         public static DataSheet? Instance { get; set; }
         public DataSheet()
         {

@@ -7,20 +7,35 @@ using Skua.Core.Models.Monsters;
 using Skua.Core.Utils;
 using Skua.Core.ViewModels;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Dynamic;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using static Skua_CosmeticPlugin.CosmeticsMainWindow;
+using System.ComponentModel;
 
 namespace Skua_CosmeticPlugin.View.UserControls
 {
     /// <summary>
     /// Interaction logic for LoadSWFWindow.xaml
     /// </summary>
-    [INotifyPropertyChanged]
-    public partial class LoadSWFWindow : UserControl
+    public partial class LoadSWFWindow : UserControl, INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string? propertyName = null) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        protected bool SetProperty<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
+        {
+            if (EqualityComparer<T>.Default.Equals(field, value))
+                return false;
+            field = value;
+            OnPropertyChanged(propertyName);
+            return true;
+        }
+
         public static LoadSWFWindow Instance { get; } = new();
         public LoadSWFWindow()
         {
