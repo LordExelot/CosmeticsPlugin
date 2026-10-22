@@ -37,7 +37,7 @@ namespace Skua_CosmeticPlugin.View.UserControls
             SelectedItem_File.Text = SelectedItem!.Link;
 
             //BindingOperations.ClearBinding(FavoriteSWFButton, Button.ForegroundProperty);
-            //FavoriteSWFButton.SetBinding(Button.ForegroundProperty, ItemIsFavorite ? 
+            //FavoriteSWFButton.SetBinding(Button.ForegroundProperty, ItemIsFavorite ?
             //    new Binding("Background") { Source = Main.ThemeButton } :
             //    new Binding("Foreground") { Source = Main.ThemeText });
         }
@@ -410,7 +410,7 @@ namespace Skua_CosmeticPlugin.View.UserControls
 
             Task.Run(async () =>
             {
-                byte[] fileBytes = await HttpClients.GetMapClient.GetByteArrayAsync($"{baseURL}{fileName}");
+                byte[] fileBytes = await HttpClients.GetAQContent.GetByteArrayAsync($"{baseURL}{fileName}");
                 await File.WriteAllBytesAsync(Path.Combine(path, modName), fileBytes);
             }).Wait();
         }

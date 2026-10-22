@@ -79,8 +79,8 @@ namespace Skua_CosmeticPlugin
         public Models.TabItem? SelectedTabItem
         {
             get { return _selectedTabItem; }
-            set 
-            { 
+            set
+            {
                 SetProperty(ref _selectedTabItem, value);
                 if (value != null)
                 {
